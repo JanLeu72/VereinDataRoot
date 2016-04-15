@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Web;
 using System.Xml.Serialization;
+using Ionic.Zip;
 using Microsoft.AspNet.SignalR;
 using Models;
 using Models.Backup;
@@ -63,9 +62,9 @@ namespace VereinDataRoot
 
         private void CreateFile(VereinBackup modelBackup)
         {
-            string fileName = DateTime.Now.ToString() + "_myFileName";
-            string pathFile = @"C:\VsProjekte\www\VereinDataRoot\VereinDataRoot\Backup\" + fileName + ".xml";
-            string pathZipFile = @"C:\VsProjekte\www\VereinDataRoot\VereinDataRoot\Backup\" + fileName + ".zip";
+            string fileName = "Verein_Backup_" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            string pathFile = "C:\\VsProjekte\\www\\VereinDataRoot\\VereinDataRoot\\Backup\\" + fileName + ".xml";
+            string pathZipFile = "C:\\VsProjekte\\www\\VereinDataRoot\\VereinDataRoot\\Backup\\" + fileName + ".zip";
 
             // Insert code to set properties and fields of the object.
             XmlSerializer mySerializer = new XmlSerializer(typeof(VereinBackup));
@@ -76,11 +75,29 @@ namespace VereinDataRoot
                 myWriter.Close();
             }
 
-            ZipFile.CreateFromDirectory(pathFile, pathZipFile, CompressionLevel.Optimal, true);
+            try
+            {
+                using (ZipFile zip = new ZipFile())
+                {
+                    zip.AddFile(pathFile);
+                    zip.Save(pathZipFile);
+                }
 
+                if (File.Exists(pathFile))
+                {
+                    File.Delete(pathFile);
+                }
 
+            }
+            catch (IOException ex)
+            {
+                
+                throw;
+            }
+            
+            
             Clients.Caller.addNewMessageToPage("Vereinsbackup wurde erstellt: ", 30);
-            Clients.Caller.addNewMessageToPage("Datei für den Download stet bereit: <a href='http://localhost:50994/backup/" + fileName + ".zip'>DownloadLink</a> ", 30);
+            Clients.Caller.addNewMessageToPage("Datei für den Download stet bereit: <a href='http://localhost:50999/backup/" + fileName + ".zip'>DownloadLink</a> ", 30);
         }
     }
 }
