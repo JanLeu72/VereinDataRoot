@@ -12,6 +12,7 @@ namespace Models.Backup
     {
         [XmlElement("MandantId")]
         public int MandantId { get; set; }
+        public string MandantName { get; set; }
 
         [XmlArray("Mitglieder")]
         [XmlArrayItem("Mitglied")]

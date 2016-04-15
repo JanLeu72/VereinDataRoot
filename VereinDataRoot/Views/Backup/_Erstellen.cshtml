@@ -2,7 +2,8 @@
 
 <div class="container">
     <button type="button" id="startBackup" class="k-button k-primary">Backup erstellen</button>
-    <input type="hidden" id="mandantId" value="@Model.MandantId" />
+    <input type="hidden" id="mandantId" value="@Model.MandantId"/>
+    <input type="hidden" id="mandantName" value="@Model.MandantName" />
     <ul id="result"></ul>
 </div>
 
@@ -27,7 +28,7 @@
             $.connection.hub.start().done(function () {
                 $('#startBackup').click(function () {
                     // Call the Send method on the hub.
-                    backup.server.start($('#mandantId').val());
+                    backup.server.start($('#mandantId').val(), $('#mandantName').val());
                 });
             });
         });

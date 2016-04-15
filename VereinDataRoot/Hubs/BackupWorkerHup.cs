@@ -1,29 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Serialization;
-using Ionic.Zip;
-using Microsoft.AspNet.SignalR;
-using Models;
-using Models.Backup;
-using Repository.Context;
-
-namespace VereinDataRoot
+﻿namespace VereinDataRoot
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Xml.Serialization;
+    using Ionic.Zip;
+    using Microsoft.AspNet.SignalR;
+    using Models;
+    using Models.Backup;
+    using Repository.Context;
+
     public class BackupWorkerHub : Hub
     {
-        public void Start(string id)
+        public void Start(string id, string mandantName)
         {
-            Clients.Caller.addNewMessageToPage("Backup wird gestartet", 0);
-            NewBackup(id);
-        }
-
-        private void NewBackup(string id)
-        {
-            Clients.Caller.addNewMessageToPage("Dateien ermitteln von MandantId: " + id, 10);
+            Clients.Caller.addNewMessageToPage("Dateien vom Verein "+ mandantName.Trim() + " ermitteln von MandantId: " + id, 10);
             VereinBackup modelBackup = new VereinBackup();
             modelBackup.MandantId = int.Parse(id);
+            modelBackup.MandantName = mandantName.Trim();
+
             BackupMitglieder(modelBackup);
         }
 
@@ -95,9 +91,8 @@ namespace VereinDataRoot
                 throw;
             }
             
-            
-            Clients.Caller.addNewMessageToPage("Vereinsbackup wurde erstellt: ", 30);
-            Clients.Caller.addNewMessageToPage("Datei für den Download stet bereit: <a href='http://localhost:50999/backup/" + fileName + ".zip'>DownloadLink</a> ", 30);
+            Clients.Caller.addNewMessageToPage("Vereinsbackup wurde erstellt: ", 99);
+            Clients.Caller.addNewMessageToPage("Datei für den Download stet bereit: <a href='http://localhost:50999/backup/" + fileName + ".zip'>DownloadLink</a> ", 100);
         }
     }
 }
