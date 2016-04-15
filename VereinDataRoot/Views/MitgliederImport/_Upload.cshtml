@@ -1,0 +1,49 @@
+﻿<div style="padding: 20px">
+    <h2>Import von Mitgliedern</h2>
+    <div style="margin: 20px 0">
+        <ul class="wizard">
+            <li class="active">1. Datei hochladen</li>
+            <li>2. Spalten zuweisen</li>
+            <li>3. Überprüfen</li>
+        </ul>
+    </div>
+    <div style="margin: 10px 0">
+
+    </div>
+    <div style="width: 300px">
+        <input name="csvfile" id="csvfile" type="file" />
+    </div>
+</div>
+<div id="popG" style="display: none"></div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#csvfile").kendoUpload({
+            async: {
+                saveUrl: "/mitgliederImport/CsvUpload",
+                autoUpload: false
+            },
+            success: function (e) {
+                var p = JSON.stringify(e.response);
+                p = JSON.parse(p);
+                if (p.save === false) {
+                    if (p.divMit <= 0) {
+                        $("#popG").kendoWindow({
+                            width: "700px",
+                            title: "Mitglieder Kontingent überschritten!",
+                            content: "/mitgliederImport/maxImport?maxMa=" + p.maxMa + "&isMit=" + p.isMit + "&divMit=" + p.divMit + "&mess=" + p.mess,
+                            actions: ["Close"],
+                            close: function () {
+                                
+                            }
+                        }).data("kendoWindow").open().center();
+                    }
+                } else {
+                    window.loadContetn("/mitgliederImport/Zuortnen");
+                }
+            },
+            localization: {
+                select: "Suche nach CSV Datei..."
+            }
+        });
+    });
+</script>

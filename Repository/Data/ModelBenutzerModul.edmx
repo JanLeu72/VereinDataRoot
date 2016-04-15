@@ -1,0 +1,597 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="VereinDataRootDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblBenutzer">
+          <Key>
+            <PropertyRef Name="BenutzerId" />
+          </Key>
+          <Property Name="BenutzerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BenutzerName" Type="char" MaxLength="20" Nullable="false" />
+          <Property Name="Mail" Type="char" MaxLength="50" Nullable="false" />
+          <Property Name="Passwort" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="MandantId" Type="int" Nullable="false" />
+          <Property Name="LetzteAnmeldung" Type="datetime" Nullable="false" />
+          <Property Name="PageStyle" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Erstellt" Type="datetime" Nullable="false" />
+          <Property Name="Aktiv" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblMandantAdressTypen">
+          <Key>
+            <PropertyRef Name="MandantAdressTypeId" />
+          </Key>
+          <Property Name="MandantAdressTypeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MandantAdressTypeName" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblMandanten">
+          <Key>
+            <PropertyRef Name="MandantId" />
+          </Key>
+          <Property Name="MandantId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MandantName" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="AnzahlMitgliederMax" Type="int" Nullable="false" />
+          <Property Name="ErstelltAm" Type="datetime" Nullable="false" />
+          <Property Name="Aktive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblMandantenAdressen">
+          <Key>
+            <PropertyRef Name="MandantAdressId" />
+          </Key>
+          <Property Name="MandantAdressId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MandantId" Type="int" Nullable="false" />
+          <Property Name="MandantAdressTypeId" Type="int" Nullable="false" />
+          <Property Name="Standart" Type="bit" Nullable="false" />
+          <Property Name="Anrede" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Vorname" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Strasse" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Plz" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Ort" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Postfach" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="AdresseZusatz" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="NameZusatz" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mail" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblMandantenBenutzerModule">
+          <Key>
+            <PropertyRef Name="MandantBenutzerModulId" />
+          </Key>
+          <Property Name="MandantBenutzerModulId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BenutzerId" Type="int" Nullable="false" />
+          <Property Name="ModulId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblMandantenModule">
+          <Key>
+            <PropertyRef Name="MandantModulId" />
+          </Key>
+          <Property Name="MandantModulId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MandantId" Type="int" Nullable="false" />
+          <Property Name="ModulId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblModule">
+          <Key>
+            <PropertyRef Name="ModulId" />
+          </Key>
+          <Property Name="ModulId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ModulName" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="ControlerName" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="ActionName" Type="char" MaxLength="15" Nullable="false" />
+          <Property Name="Sort" Type="int" Nullable="false" />
+          <Property Name="Aktiv" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTreeNavigation">
+          <Key>
+            <PropertyRef Name="TreeId" />
+          </Key>
+          <Property Name="TreeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TreeNavigationId" Type="int" Nullable="false" />
+          <Property Name="DisplayNameDe" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Action" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Controller" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Sort" Type="int" Nullable="false" />
+          <Property Name="BenutzerRolleId" Type="int" Nullable="false" />
+          <Property Name="Aktiv" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tblBenutzer_tblMandanten">
+          <End Role="tblMandanten" Type="Self.tblMandanten" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblBenutzer" Type="Self.tblBenutzer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMandanten">
+              <PropertyRef Name="MandantId" />
+            </Principal>
+            <Dependent Role="tblBenutzer">
+              <PropertyRef Name="MandantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMandantenAdressen_tblMandantAdressTypen">
+          <End Role="tblMandantAdressTypen" Type="Self.tblMandantAdressTypen" Multiplicity="1" />
+          <End Role="tblMandantenAdressen" Type="Self.tblMandantenAdressen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMandantAdressTypen">
+              <PropertyRef Name="MandantAdressTypeId" />
+            </Principal>
+            <Dependent Role="tblMandantenAdressen">
+              <PropertyRef Name="MandantAdressTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMandantenAdressen_tblMandanten">
+          <End Role="tblMandanten" Type="Self.tblMandanten" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblMandantenAdressen" Type="Self.tblMandantenAdressen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMandanten">
+              <PropertyRef Name="MandantId" />
+            </Principal>
+            <Dependent Role="tblMandantenAdressen">
+              <PropertyRef Name="MandantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMandantenBenutzerModule_tblBenutzer">
+          <End Role="tblBenutzer" Type="Self.tblBenutzer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblMandantenBenutzerModule" Type="Self.tblMandantenBenutzerModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBenutzer">
+              <PropertyRef Name="BenutzerId" />
+            </Principal>
+            <Dependent Role="tblMandantenBenutzerModule">
+              <PropertyRef Name="BenutzerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMandantenBenutzerModule_tblModule">
+          <End Role="tblModule" Type="Self.tblModule" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblMandantenBenutzerModule" Type="Self.tblMandantenBenutzerModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblModule">
+              <PropertyRef Name="ModulId" />
+            </Principal>
+            <Dependent Role="tblMandantenBenutzerModule">
+              <PropertyRef Name="ModulId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMandantenModule_tblMandanten">
+          <End Role="tblMandanten" Type="Self.tblMandanten" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblMandantenModule" Type="Self.tblMandantenModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMandanten">
+              <PropertyRef Name="MandantId" />
+            </Principal>
+            <Dependent Role="tblMandantenModule">
+              <PropertyRef Name="MandantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMandantenModule_tblModule">
+          <End Role="tblModule" Type="Self.tblModule" Multiplicity="1" />
+          <End Role="tblMandantenModule" Type="Self.tblMandantenModule" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblModule">
+              <PropertyRef Name="ModulId" />
+            </Principal>
+            <Dependent Role="tblMandantenModule">
+              <PropertyRef Name="ModulId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VereinDataRootDBModelStoreContainer">
+          <EntitySet Name="tblBenutzer" EntityType="Self.tblBenutzer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMandantAdressTypen" EntityType="Self.tblMandantAdressTypen" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMandanten" EntityType="Self.tblMandanten" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMandantenAdressen" EntityType="Self.tblMandantenAdressen" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMandantenBenutzerModule" EntityType="Self.tblMandantenBenutzerModule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblMandantenModule" EntityType="Self.tblMandantenModule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblModule" EntityType="Self.tblModule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTreeNavigation" EntityType="Self.tblTreeNavigation" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblBenutzer_tblMandanten" Association="Self.FK_tblBenutzer_tblMandanten">
+            <End Role="tblMandanten" EntitySet="tblMandanten" />
+            <End Role="tblBenutzer" EntitySet="tblBenutzer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMandantenAdressen_tblMandantAdressTypen" Association="Self.FK_tblMandantenAdressen_tblMandantAdressTypen">
+            <End Role="tblMandantAdressTypen" EntitySet="tblMandantAdressTypen" />
+            <End Role="tblMandantenAdressen" EntitySet="tblMandantenAdressen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMandantenAdressen_tblMandanten" Association="Self.FK_tblMandantenAdressen_tblMandanten">
+            <End Role="tblMandanten" EntitySet="tblMandanten" />
+            <End Role="tblMandantenAdressen" EntitySet="tblMandantenAdressen" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMandantenBenutzerModule_tblBenutzer" Association="Self.FK_tblMandantenBenutzerModule_tblBenutzer">
+            <End Role="tblBenutzer" EntitySet="tblBenutzer" />
+            <End Role="tblMandantenBenutzerModule" EntitySet="tblMandantenBenutzerModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMandantenBenutzerModule_tblModule" Association="Self.FK_tblMandantenBenutzerModule_tblModule">
+            <End Role="tblModule" EntitySet="tblModule" />
+            <End Role="tblMandantenBenutzerModule" EntitySet="tblMandantenBenutzerModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMandantenModule_tblMandanten" Association="Self.FK_tblMandantenModule_tblMandanten">
+            <End Role="tblMandanten" EntitySet="tblMandanten" />
+            <End Role="tblMandantenModule" EntitySet="tblMandantenModule" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMandantenModule_tblModule" Association="Self.FK_tblMandantenModule_tblModule">
+            <End Role="tblModule" EntitySet="tblModule" />
+            <End Role="tblMandantenModule" EntitySet="tblMandantenModule" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VereinDataRootDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Benutzer_Benutzer">
+          <Key>
+            <PropertyRef Name="BenutzerId" />
+          </Key>
+          <Property Name="BenutzerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Mail" Type="String" MaxLength="50" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Passwort" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="MandantId" Type="Int32" Nullable="false" />
+          <Property Name="LetzteAnmeldung" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Erstellt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Aktiv" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tblMandanten" Relationship="Self.FK_tblBenutzer_tblMandanten" FromRole="tblBenutzer" ToRole="tblMandanten" />
+          <NavigationProperty Name="tblMandantenBenutzerModules" Relationship="Self.FK_tblMandantenBenutzerModule_tblBenutzer" FromRole="tblBenutzer" ToRole="tblMandantenBenutzerModule" />
+          <Property Name="PageStyle" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="BenutzerName" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Mandanten_Benutzer">
+          <Key>
+            <PropertyRef Name="MandantId" />
+          </Key>
+          <Property Name="MandantId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MandantName" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="ErstelltAm" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Aktive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tblBenutzers" Relationship="Self.FK_tblBenutzer_tblMandanten" FromRole="tblMandanten" ToRole="tblBenutzer" />
+          <NavigationProperty Name="tblMandantenModules" Relationship="Self.FK_tblMandantenModule_tblMandanten" FromRole="tblMandanten" ToRole="tblMandantenModule" />
+          <Property Name="AnzahlMitgliederMax" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblMandantenAdressens" Relationship="VereinDataRootDBModel.FK_tblMandantenAdressen_tblMandanten" FromRole="Mandanten_Benutzer" ToRole="tblMandantenAdressen" />
+        </EntityType>
+        <EntityType Name="MandantenBenutzerModule_Benutzer">
+          <Key>
+            <PropertyRef Name="MandantBenutzerModulId" />
+          </Key>
+          <Property Name="MandantBenutzerModulId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BenutzerId" Type="Int32" Nullable="false" />
+          <Property Name="ModulId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblBenutzer" Relationship="Self.FK_tblMandantenBenutzerModule_tblBenutzer" FromRole="tblMandantenBenutzerModule" ToRole="tblBenutzer" />
+          <NavigationProperty Name="tblModule" Relationship="Self.FK_tblMandantenBenutzerModule_tblModule" FromRole="tblMandantenBenutzerModule" ToRole="tblModule" />
+        </EntityType>
+        <EntityType Name="MandantenModule_Benutzer">
+          <Key>
+            <PropertyRef Name="MandantModulId" />
+          </Key>
+          <Property Name="MandantModulId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MandantId" Type="Int32" Nullable="false" />
+          <Property Name="ModulId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblMandanten" Relationship="Self.FK_tblMandantenModule_tblMandanten" FromRole="tblMandantenModule" ToRole="tblMandanten" />
+          <NavigationProperty Name="tblModule" Relationship="Self.FK_tblMandantenModule_tblModule" FromRole="tblMandantenModule" ToRole="tblModule" />
+        </EntityType>
+        <EntityType Name="Module_Benutzer">
+          <Key>
+            <PropertyRef Name="ModulId" />
+          </Key>
+          <Property Name="ModulId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModulName" Type="String" MaxLength="15" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tblMandantenBenutzerModules" Relationship="Self.FK_tblMandantenBenutzerModule_tblModule" FromRole="tblModule" ToRole="tblMandantenBenutzerModule" />
+          <NavigationProperty Name="tblMandantenModules" Relationship="Self.FK_tblMandantenModule_tblModule" FromRole="tblModule" ToRole="tblMandantenModule" />
+          <Property Name="ControlerName" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="ActionName" Type="String" Nullable="false" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="Aktiv" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tblBenutzer_tblMandanten">
+          <End Role="tblMandanten" Type="VereinDataRootDBModel.Mandanten_Benutzer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblBenutzer" Type="VereinDataRootDBModel.Benutzer_Benutzer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMandanten">
+              <PropertyRef Name="MandantId" />
+            </Principal>
+            <Dependent Role="tblBenutzer">
+              <PropertyRef Name="MandantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMandantenBenutzerModule_tblBenutzer">
+          <End Role="tblBenutzer" Type="VereinDataRootDBModel.Benutzer_Benutzer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblMandantenBenutzerModule" Type="VereinDataRootDBModel.MandantenBenutzerModule_Benutzer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblBenutzer">
+              <PropertyRef Name="BenutzerId" />
+            </Principal>
+            <Dependent Role="tblMandantenBenutzerModule">
+              <PropertyRef Name="BenutzerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMandantenModule_tblMandanten">
+          <End Role="tblMandanten" Type="VereinDataRootDBModel.Mandanten_Benutzer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblMandantenModule" Type="VereinDataRootDBModel.MandantenModule_Benutzer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMandanten">
+              <PropertyRef Name="MandantId" />
+            </Principal>
+            <Dependent Role="tblMandantenModule">
+              <PropertyRef Name="MandantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMandantenBenutzerModule_tblModule">
+          <End Role="tblModule" Type="VereinDataRootDBModel.Module_Benutzer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblMandantenBenutzerModule" Type="VereinDataRootDBModel.MandantenBenutzerModule_Benutzer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblModule">
+              <PropertyRef Name="ModulId" />
+            </Principal>
+            <Dependent Role="tblMandantenBenutzerModule">
+              <PropertyRef Name="ModulId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMandantenModule_tblModule">
+          <End Role="tblModule" Type="VereinDataRootDBModel.Module_Benutzer" Multiplicity="1" />
+          <End Role="tblMandantenModule" Type="VereinDataRootDBModel.MandantenModule_Benutzer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblModule">
+              <PropertyRef Name="ModulId" />
+            </Principal>
+            <Dependent Role="tblMandantenModule">
+              <PropertyRef Name="ModulId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VereinDataRootDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Benutzer_Benutzer" EntityType="VereinDataRootDBModel.Benutzer_Benutzer" />
+          <EntitySet Name="Mandanten_Benutzer" EntityType="VereinDataRootDBModel.Mandanten_Benutzer" />
+          <EntitySet Name="MandantenBenutzerModule_Benutzer" EntityType="VereinDataRootDBModel.MandantenBenutzerModule_Benutzer" />
+          <EntitySet Name="MandantenModule_Benutzer" EntityType="VereinDataRootDBModel.MandantenModule_Benutzer" />
+          <EntitySet Name="Module_Benutzer" EntityType="VereinDataRootDBModel.Module_Benutzer" />
+          <AssociationSet Name="FK_tblBenutzer_tblMandanten" Association="Self.FK_tblBenutzer_tblMandanten">
+            <End Role="tblMandanten" EntitySet="Mandanten_Benutzer" />
+            <End Role="tblBenutzer" EntitySet="Benutzer_Benutzer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMandantenBenutzerModule_tblBenutzer" Association="Self.FK_tblMandantenBenutzerModule_tblBenutzer">
+            <End Role="tblBenutzer" EntitySet="Benutzer_Benutzer" />
+            <End Role="tblMandantenBenutzerModule" EntitySet="MandantenBenutzerModule_Benutzer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMandantenModule_tblMandanten" Association="Self.FK_tblMandantenModule_tblMandanten">
+            <End Role="tblMandanten" EntitySet="Mandanten_Benutzer" />
+            <End Role="tblMandantenModule" EntitySet="MandantenModule_Benutzer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMandantenBenutzerModule_tblModule" Association="Self.FK_tblMandantenBenutzerModule_tblModule">
+            <End Role="tblModule" EntitySet="Module_Benutzer" />
+            <End Role="tblMandantenBenutzerModule" EntitySet="MandantenBenutzerModule_Benutzer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMandantenModule_tblModule" Association="Self.FK_tblMandantenModule_tblModule">
+            <End Role="tblModule" EntitySet="Module_Benutzer" />
+            <End Role="tblMandantenModule" EntitySet="MandantenModule_Benutzer" />
+          </AssociationSet>
+          <EntitySet Name="TreeNavigations" EntityType="VereinDataRootDBModel.TreeNavigation" />
+          <EntitySet Name="MandantAdressTypens" EntityType="VereinDataRootDBModel.MandantAdressTypen" />
+          <EntitySet Name="MandantenAdressens" EntityType="VereinDataRootDBModel.MandantenAdressen" />
+          <AssociationSet Name="FK_tblMandantenAdressen_tblMandantAdressTypen" Association="VereinDataRootDBModel.FK_tblMandantenAdressen_tblMandantAdressTypen">
+            <End Role="tblMandantAdressTypen" EntitySet="MandantAdressTypens" />
+            <End Role="tblMandantenAdressen" EntitySet="MandantenAdressens" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblMandantenAdressen_tblMandanten" Association="VereinDataRootDBModel.FK_tblMandantenAdressen_tblMandanten">
+            <End Role="Mandanten_Benutzer" EntitySet="Mandanten_Benutzer" />
+            <End Role="tblMandantenAdressen" EntitySet="MandantenAdressens" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="TreeNavigation">
+          <Key>
+            <PropertyRef Name="TreeId" />
+          </Key>
+          <Property Name="TreeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TreeNavigationId" Type="Int32" Nullable="false" />
+          <Property Name="DisplayNameDe" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Action" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Controller" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Sort" Type="Int32" Nullable="false" />
+          <Property Name="BenutzerRolleId" Type="Int32" Nullable="false" />
+          <Property Name="Aktiv" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MandantAdressTypen">
+          <Key>
+            <PropertyRef Name="MandantAdressTypeId" />
+          </Key>
+          <Property Name="MandantAdressTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MandantAdressTypeName" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="MandantenAdressens" Relationship="VereinDataRootDBModel.FK_tblMandantenAdressen_tblMandantAdressTypen" FromRole="tblMandantAdressTypen" ToRole="tblMandantenAdressen" />
+        </EntityType>
+        <EntityType Name="MandantenAdressen">
+          <Key>
+            <PropertyRef Name="MandantAdressId" />
+          </Key>
+          <Property Name="MandantAdressId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MandantId" Type="Int32" Nullable="false" />
+          <Property Name="MandantAdressTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Standart" Type="Boolean" Nullable="false" />
+          <Property Name="Anrede" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Vorname" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Strasse" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Plz" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Ort" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Postfach" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="AdresseZusatz" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="NameZusatz" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Mail" Type="String" Nullable="false" MaxLength="50" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="MandantAdressTypen" Relationship="VereinDataRootDBModel.FK_tblMandantenAdressen_tblMandantAdressTypen" FromRole="tblMandantenAdressen" ToRole="tblMandantAdressTypen" />
+          <NavigationProperty Name="Mandanten" Relationship="VereinDataRootDBModel.FK_tblMandantenAdressen_tblMandanten" FromRole="tblMandantenAdressen" ToRole="Mandanten_Benutzer" />
+        </EntityType>
+        <Association Name="FK_tblMandantenAdressen_tblMandantAdressTypen">
+          <End Type="VereinDataRootDBModel.MandantAdressTypen" Role="tblMandantAdressTypen" Multiplicity="1" />
+          <End Type="VereinDataRootDBModel.MandantenAdressen" Role="tblMandantenAdressen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblMandantAdressTypen">
+              <PropertyRef Name="MandantAdressTypeId" />
+            </Principal>
+            <Dependent Role="tblMandantenAdressen">
+              <PropertyRef Name="MandantAdressTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblMandantenAdressen_tblMandanten">
+          <End Type="VereinDataRootDBModel.Mandanten_Benutzer" Role="Mandanten_Benutzer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="VereinDataRootDBModel.MandantenAdressen" Role="tblMandantenAdressen" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Mandanten_Benutzer">
+              <PropertyRef Name="MandantId" />
+            </Principal>
+            <Dependent Role="tblMandantenAdressen">
+              <PropertyRef Name="MandantId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VereinDataRootDBModelStoreContainer" CdmEntityContainer="VereinDataRootDBEntities">
+          <EntitySetMapping Name="Benutzer_Benutzer">
+            <EntityTypeMapping TypeName="VereinDataRootDBModel.Benutzer_Benutzer">
+              <MappingFragment StoreEntitySet="tblBenutzer">
+                <ScalarProperty Name="BenutzerName" ColumnName="BenutzerName" />
+                <ScalarProperty Name="PageStyle" ColumnName="PageStyle" />
+                <ScalarProperty Name="BenutzerId" ColumnName="BenutzerId" />
+                <ScalarProperty Name="Mail" ColumnName="Mail" />
+                <ScalarProperty Name="Passwort" ColumnName="Passwort" />
+                <ScalarProperty Name="MandantId" ColumnName="MandantId" />
+                <ScalarProperty Name="LetzteAnmeldung" ColumnName="LetzteAnmeldung" />
+                <ScalarProperty Name="Erstellt" ColumnName="Erstellt" />
+                <ScalarProperty Name="Aktiv" ColumnName="Aktiv" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mandanten_Benutzer">
+            <EntityTypeMapping TypeName="VereinDataRootDBModel.Mandanten_Benutzer">
+              <MappingFragment StoreEntitySet="tblMandanten">
+                <ScalarProperty Name="AnzahlMitgliederMax" ColumnName="AnzahlMitgliederMax" />
+                <ScalarProperty Name="MandantId" ColumnName="MandantId" />
+                <ScalarProperty Name="MandantName" ColumnName="MandantName" />
+                <ScalarProperty Name="ErstelltAm" ColumnName="ErstelltAm" />
+                <ScalarProperty Name="Aktive" ColumnName="Aktive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MandantenBenutzerModule_Benutzer">
+            <EntityTypeMapping TypeName="VereinDataRootDBModel.MandantenBenutzerModule_Benutzer">
+              <MappingFragment StoreEntitySet="tblMandantenBenutzerModule">
+                <ScalarProperty Name="MandantBenutzerModulId" ColumnName="MandantBenutzerModulId" />
+                <ScalarProperty Name="BenutzerId" ColumnName="BenutzerId" />
+                <ScalarProperty Name="ModulId" ColumnName="ModulId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MandantenModule_Benutzer">
+            <EntityTypeMapping TypeName="VereinDataRootDBModel.MandantenModule_Benutzer">
+              <MappingFragment StoreEntitySet="tblMandantenModule">
+                <ScalarProperty Name="MandantModulId" ColumnName="MandantModulId" />
+                <ScalarProperty Name="MandantId" ColumnName="MandantId" />
+                <ScalarProperty Name="ModulId" ColumnName="ModulId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Module_Benutzer">
+            <EntityTypeMapping TypeName="VereinDataRootDBModel.Module_Benutzer">
+              <MappingFragment StoreEntitySet="tblModule">
+                <ScalarProperty Name="Aktiv" ColumnName="Aktiv" />
+                <ScalarProperty Name="ActionName" ColumnName="ActionName" />
+                <ScalarProperty Name="ControlerName" ColumnName="ControlerName" />
+                <ScalarProperty Name="ModulId" ColumnName="ModulId" />
+                <ScalarProperty Name="ModulName" ColumnName="ModulName" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TreeNavigations">
+            <EntityTypeMapping TypeName="VereinDataRootDBModel.TreeNavigation">
+              <MappingFragment StoreEntitySet="tblTreeNavigation">
+                <ScalarProperty Name="Aktiv" ColumnName="Aktiv" />
+                <ScalarProperty Name="BenutzerRolleId" ColumnName="BenutzerRolleId" />
+                <ScalarProperty Name="Sort" ColumnName="Sort" />
+                <ScalarProperty Name="Controller" ColumnName="Controller" />
+                <ScalarProperty Name="Action" ColumnName="Action" />
+                <ScalarProperty Name="DisplayNameDe" ColumnName="DisplayNameDe" />
+                <ScalarProperty Name="TreeNavigationId" ColumnName="TreeNavigationId" />
+                <ScalarProperty Name="TreeId" ColumnName="TreeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MandantAdressTypens">
+            <EntityTypeMapping TypeName="VereinDataRootDBModel.MandantAdressTypen">
+              <MappingFragment StoreEntitySet="tblMandantAdressTypen">
+                <ScalarProperty Name="MandantAdressTypeName" ColumnName="MandantAdressTypeName" />
+                <ScalarProperty Name="MandantAdressTypeId" ColumnName="MandantAdressTypeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MandantenAdressens">
+            <EntityTypeMapping TypeName="VereinDataRootDBModel.MandantenAdressen">
+              <MappingFragment StoreEntitySet="tblMandantenAdressen">
+                <ScalarProperty Name="Mail" ColumnName="Mail" />
+                <ScalarProperty Name="NameZusatz" ColumnName="NameZusatz" />
+                <ScalarProperty Name="AdresseZusatz" ColumnName="AdresseZusatz" />
+                <ScalarProperty Name="Postfach" ColumnName="Postfach" />
+                <ScalarProperty Name="Ort" ColumnName="Ort" />
+                <ScalarProperty Name="Plz" ColumnName="Plz" />
+                <ScalarProperty Name="Strasse" ColumnName="Strasse" />
+                <ScalarProperty Name="Vorname" ColumnName="Vorname" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Anrede" ColumnName="Anrede" />
+                <ScalarProperty Name="Standart" ColumnName="Standart" />
+                <ScalarProperty Name="MandantAdressTypeId" ColumnName="MandantAdressTypeId" />
+                <ScalarProperty Name="MandantId" ColumnName="MandantId" />
+                <ScalarProperty Name="MandantAdressId" ColumnName="MandantAdressId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

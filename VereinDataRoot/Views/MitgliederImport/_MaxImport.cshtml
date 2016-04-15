@@ -1,0 +1,76 @@
+﻿
+@model VereinDataRoot.ViewModels.MaxMitgliederViewModel
+<div style="margin: 10px 0">Sie möchten <span class="text-bold">@Model.IstMitglieder</span> Mitglieder Importiern.<br/>
+    Mit Ihrem aktuellen Abo haben Sie das Mitgliederkontingent von maximal <span class="text-bold">@Model.MaxMitglieder</span> Mitgliedern überschritten!</div>
+<input type="hidden" id="maxMit" value="@Model.MaxMitglieder" />
+<div style="margin: 10px 0">Um mehr Mitglieder erfassen zu können, müssen Sie Ihr Kontingent erhöhen und auf ein höheres Abo wechseln.</div>
+<div style="margin: 10px 0">
+    <table id="gridAbo">
+        <thead>
+            <tr>
+                <th>Funktion</th>
+                <th>Free</th>
+                <th>Small</th>
+                <th>Medium</th>
+                <th>Large</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <button class="k-button" data-abo="50">Auf 50 erhöhen</button>
+                </td>
+                <td>
+                    <button class="k-button" data-abo="250">Auf 250 erhöhen</button>
+                </td>
+                <td>
+                    <button class="k-button" data-abo="500">Auf 500 erhöhen</button>
+                </td>
+                <td>
+                    <button class="k-button" data-abo="1000">Auf 1000 erhöhen</button>
+                </td>
+            </tr>
+        </tfoot>
+        <tbody>
+            <tr>
+                <td>Anzahl Mitglieder</td>
+                <td>bis 50</td>
+                <td>bis 250</td>
+                <td>bis 500</td>
+                <td>bis 1000</td>
+            </tr>
+            <tr>
+                <td>Kosten / Jahr</td>
+                <td>gratis</td>
+                <td>200.-</td>
+                <td>550.-</td>
+                <td>1200.-</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div style="margin: 10px 0">
+    <span id="messabo"></span>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#gridAbo").kendoGrid({sortable: false});
+        var max = $("#maxMit").val();
+        if (max == 50) {$("[data-abo='250']").addClass("k-primary");$("[data-abo='50']").addClass("k-state-disabled");$("[data-abo='50']").prop("disabled","disabled");}
+        if (max == 250) {$("[data-abo='500']").addClass("k-primary");$("[data-abo='250']").addClass("k-state-disabled");$("[data-abo='250']").prop("disabled", "disabled");$("[data-abo='50']").addClass("k-state-disabled");$("[data-abo='50']").prop("disabled", "disabled");}
+        if (max == 500) {$("[data-abo='1000']").addClass("k-primary");$("[data-abo='50']").addClass("k-state-disabled");$("[data-abo='50']").prop("disabled", "disabled");$("[data-abo='250']").addClass("k-state-disabled");$("[data-abo='250']").prop("disabled", "disabled");$("[data-abo='500']").addClass("k-state-disabled");$("[data-abo='500']").prop("disabled", "disabled");}
+    });
+
+    $("[data-abo]").on("click", function() {
+        var item = $(this).data("abo");
+        $.ajax({
+            method: "POST",
+            url: "/mitglieder/setNewAbo",
+            data: { value: item }
+        }).done(function(request) {
+            if (request) {$("#messabo").html("Ihr Kontingent wurde auf " + item + " erhöht!<br />Schliessen Sie das Fenster und starten Sie den Import neu.");
+            } else {$("#messabo").html("Ihr Kontingent konnte nicht erhöht werden!");}
+        });
+    });
+</script>

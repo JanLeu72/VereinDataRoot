@@ -1,0 +1,682 @@
+﻿<div id="gridU"></div>
+<div id="popG" style="display: none"></div>
+<script type="text/x-kendo-template" id="toolBar">
+    <a class="k-button k-button-icontext k-grid-add"><span class="k-icon k-add"></span>&nbsp;Neues Mitglied</a>
+    <a class="k-button k-button-icontext" onclick="excelExport()"><span class="k-icon k-i-excel"></span>&nbsp;Export in CSV</a>
+</script>
+
+<script type="text/x-kendo-template" id="detailtemplate">
+    <div class="tabstrip">
+        <ul>
+            <li class="k-state-active">
+                Detail
+            </li>
+        </ul>
+        <div>
+            <div class="employee-details">
+                <ul>
+                    <li><label>Anrede:</label><span>#= Anrede #</span></li>
+                    <li><label>Name:</label><span>#= Name #</span></li>
+                    <li><label>Vorname:</label><span>#= Vorname #</span></li>
+                    <li><label>Zusatz Name:</label><span>#= ZusatzName #</span></li>
+                    <li><label>Strasse:</label><span>#= Strasse #</span></li>
+                    <li><label>PLZ:</label><span>#= Plz #</span></li>
+                    <li><label>Ort:</label><span>#= Ort #</span></li>
+                </ul>
+            </div>
+            <div class="employee-details">
+                <ul>
+                    <li><label>Mail:</label><span>#= Mail #</span></li>
+                    <li><label>Mobile:</label><span>#= Mobile #</span></li>
+                    <li><label>Telefon Privat:</label><span>#= TelefonP #</span></li>
+                    <li><label>Telefon Geschäft:</label><span>#= TelefonG #</span></li>
+                    <li><label>Fax:</label><span>#= Fax #</span></li>
+                    <li><label>Geburtstag:</label><span>#= Geburtstag #</span></li>
+                    <li><label>Bemerkung:</label><span>#= Bemerkung #</span></li>
+                </ul>
+            </div>
+            <div class='employee-details'>
+                <ul>
+                    <li><label>Land:</label><span>#= LandName #</span></li>
+                    <li><label>Gruppe:</label><span>#= MandantBenutzerGruppeName #</span></li>
+                    <li><label>Mitgliedschaft:</label><span>#= MitgliedschaftTypeName #</span></li>
+                    <li><label>Datum Rechnung:</label><span>#= kendo.toString(kendo.parseDate(RechnungsDatumString),"d") #</span></li>
+                </ul>
+            </div>
+            <p style="clear:left"></p>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="popup_editor">
+    <div class="lcontainer">
+        <div class="k-edit-label">
+            <label for="AnredeId">Anrede</label>
+        </div>
+        <div class="k-edit-field">
+            <select name="AnredeId"
+                    data-type="string"
+                    data-bind="value:AnredeId"
+                    data-value-field="Id"
+                    data-text-field="Value"
+                    data-source="dsAnrede"
+                    data-role="dropdownlist" />
+        </div>
+
+        <div class="k-edit-label">
+            <label for="Nachname">Name</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="Name"
+                   data-type="string"
+                   data-bind="value:Name"
+                   class="k-textbox" />
+        </div>
+
+        <div class="k-edit-label">
+            <label for="Vorname">Vorname</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="Vorname"
+                   data-type="string"
+                   data-bind="value:Vorname"
+                   class="k-textbox" />
+        </div>
+
+        <div class="k-edit-label">
+            <label for="ZusatzName">Zusatz Name</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="ZusatzName"
+                   data-type="string"
+                   data-bind="value:ZusatzName"
+                   class="k-textbox" />
+        </div>
+
+        <div class="k-edit-label">
+            <label for="Strasse">Strasse, Nr.</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="Strasse"
+                   data-type="string"
+                   data-bind="value:Strasse"
+                   class="k-textbox" />
+        </div>
+
+        <div class="k-edit-label">
+            <label for="Plz">PLZ</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="Plz"
+                   data-type="string"
+                   data-bind="value:Plz"
+                   class="k-textbox" />
+        </div>
+
+        <div class="k-edit-label">
+            <label for="Ort">Ort</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="Ort"
+                   data-type="string"
+                   data-bind="value:Ort"
+                   class="k-textbox" />
+        </div>
+        
+        <div class="k-edit-label">
+            <label for="Mail">E-Mail</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="Mail"
+                   data-type="string"
+                   data-bind="value:Mail"
+                   class="k-textbox" />
+        </div>
+        
+        <div class="k-edit-label">
+            <label for="Geburtstag">Geburtstag</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="Geburtstag"
+                   data-type="string"
+                   data-bind="value:Geburtstag"
+                   placeholder="dd.mm.jjjj"
+                   class="k-textbox" />
+        </div>
+    </div>
+    <div class="rcontainer">
+        <div class="k-edit-label">
+            <label for="Mobile">Mobile</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="Mobile"
+                   data-type="string"
+                   data-bind="value:Mobile"
+                   class="k-textbox" />
+        </div>
+
+        <div class="k-edit-label">
+            <label for="Telefon">Telefon Privat</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="TelefonP"
+                   data-type="string"
+                   data-bind="value:TelefonP"
+                   class="k-textbox" />
+        </div>
+        
+        <div class="k-edit-label">
+            <label for="Telefon">Telefon Geschäft</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="TelefonG"
+                   data-type="string"
+                   data-bind="value:TelefonG"
+                   class="k-textbox" />
+        </div>
+
+        <div class="k-edit-label">
+            <label for="Fax">Fax</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="Fax"
+                   data-type="string"
+                   data-bind="value:Fax"
+                   class="k-textbox" />
+        </div>
+        
+        <div class="k-edit-label">
+            <label for="Bemerkung">Bemerkung</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="Bemerkung"
+                   data-type="string"
+                   data-bind="value:Bemerkung"
+                   class="k-textbox" />
+        </div>
+        
+        <div class="k-edit-label">
+            <label for="LandId">Land</label>
+        </div>
+        <div class="k-edit-field">
+            <select name="LandId"
+                    data-type="string"
+                    data-bind="value:LandId"
+                    data-value-field="Id"
+                    data-text-field="Value"
+                    data-source="dsLaender"
+                    data-role="dropdownlist" />
+        </div>
+
+        <div class="k-edit-label">
+            <label for="MitgliedschaftTypeId">Mitgliedschaft</label>
+        </div>
+        <div class="k-edit-field">
+            <select name="MitgliedschaftTypeId"
+                    data-type="string"
+                    data-bind="value:MitgliedschaftTypeId"
+                    data-value-field="Id"
+                    data-text-field="Value"
+                    data-source="dsMitgliedschaft"
+                    data-role="dropdownlist" />
+        </div>
+
+        <div class="k-edit-label">
+            <label for="MandantBenutzerGruppeId">Gruppe</label>
+        </div>
+        <div class="k-edit-field">
+            <select name="MandantBenutzerGruppeId"
+                    data-type="string"
+                    data-bind="value:MandantBenutzerGruppeId"
+                    data-value-field="Id"
+                    data-text-field="Value"
+                    data-source="dsMaGruppe"
+                    data-role="dropdownlist" />
+        </div>
+
+        <div class="k-edit-label">
+            <label for="RechnungsDatum">Datum Rechnung</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="RechnungsDatumString"
+                   data-type="date"
+                   data-bind="value:RechnungsDatumString"
+                   data-role="datepicker" />
+        </div>
+    </div>
+    <p style="clear: both"></p>
+</script>
+
+<script type="text/javascript">
+    var gridU;
+    $(document).ready(function() {
+        var ds = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "/mitglieder/getMitglieder",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8"
+                },
+                update: {
+                    url: "/mitglieder/setMitglied",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8"
+                },
+                create: {
+                    url: "/mitglieder/setMitglied",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    complete: function(e) {
+                        var p = JSON.parse(e.responseText);
+                        if (p.save === false) {
+                            if (p.divMit <= 0) {
+                                $("#popG").kendoWindow({
+                                    width: "700px",
+                                    title: "Mitglieder anzahl erreicht!",
+                                    content: "/mitglieder/maxMitglieder?maxMa=" + p.maxMa + "&isMit=" + p.isMit + "&divMit=" + p.divMit + "&mess=" + p.mess,
+                                    actions: ["Close"],
+                                    close: function() {
+                                        gridU.data("kendoGrid").dataSource.read();
+                                    }
+                                }).data("kendoWindow").open().center();
+                            }
+                        }
+                    }
+                },
+                destroy: {
+                    url: "/mitglieder/delMitglied",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8"
+                },
+                parameterMap: function(data, operation) {
+                    if (operation === "read") {
+                        return JSON.stringify(data);
+                    }
+                    if (operation !== "read") {
+                        return kendo.stringify({ model: data });
+                    }
+                }
+            },
+            schema: {
+                data: function(response) {
+                    return response.Mitglieder;
+                },
+                total: function(response) {
+                    return response.Anzahl;
+                },
+                model: {
+                    id: "MitgliedId",
+                    fields: {
+                        MitgliedId: { editable: false },
+                        Anrede: { type: "string", editable: true, nullable: true },
+                        Vorname: { type: "string", editable: true, validation: { required: true } },
+                        Name: { type: "string", editable: true, validation: { required: true } },
+                        ZusatzName: { type: "string", editable: true, validation: { required: false } },
+                        Strasse: { type: "string", editable: true, validation: { required: true } },
+                        Plz: { type: "string", editable: true, validation: { required: true } },
+                        Ort: { type: "string", editable: true, validation: { required: true } },
+                        Geburtstag: { type: "string", editable: true, validation: { required: false } },
+                        Mail: { type: "string", editable: true, validation: { required: false } },
+                        Telefon: { type: "string", editable: true, validation: { required: false } },
+                        Mobile: { type: "string", editable: true, validation: { required: false } },
+                        Fax: { type: "string", editable: true, validation: { required: false } },
+                        MitgliedschaftTypeName: { type: "string", editable: true, validation: { required: true } },
+                        MandantBenutzerGruppeName: { type: "string", editable: true, validation: { required: true } },
+                        RechnungsDatumString: { type: "date", format: "{0:dd.MM.yyyy}", editable: true, validation: { required: true } },
+                        LandName: { type: "string", editable: true, validation: { required: true } }
+                    }
+                }
+            },
+            pageSize: 25,
+            autoSync: false,
+            serverPaging: true,
+            serverFiltering: true,
+            serverSorting: true,
+            error: function(e) {
+                alert(e.status + " " + e.statusText);
+            }
+        });
+
+        gridU = $("#gridU").kendoGrid({
+            dataSource: ds,
+            toolbar: kendo.template($("#toolBar").html()),
+            scrollable: true,
+            navigatable: false,
+            filterable: true,
+            sortable: true,
+            resizable: true,
+            reorderable: true,
+            detailTemplate: kendo.template($("#detailtemplate").html()),
+            detailInit: detailInit,
+            editable: {
+                mode: "popup",
+                update: true,
+                destroy: true,
+                confirmation: "Dieses Mitglied unwiderruflich löschen?",
+                template: $("#popup_editor").html()
+            },
+            pageable: {
+                refresh: true,
+                pageSizes: [5, 10, 25, 50, 100]
+            },
+            columns: [
+                {
+                    command: [
+                        { name: "edit", text: "" },
+                        { name: "destroy", text: "" }
+                    ],
+                    titel: "&nbsp;",
+                    width: 80
+                }, {
+                    field: "Anrede",
+                    title: "Anrede",
+                    width: 100,
+                    filterable: {
+                        ui: anredeFilter,
+                        extra: false,
+                        operators: {
+                            string: {
+                                eq: "Ist gleich"
+                            }
+                        }
+                    }
+                }, {
+                    field: "Name",
+                    title: "Name",
+                    filterable: {
+                        extra: false,
+                        operators: {
+                            string: {
+                                startswith: "Beginnt mit",
+                                eq: "Ist gleich"
+                            }
+                        }
+                    }
+                }, {
+                    field: "Vorname",
+                    title: "Vorname",
+                    filterable: {
+                        extra: false,
+                        operators: {
+                            string: {
+                                startswith: "Beginnt mit",
+                                eq: "Ist gleich"
+                            }
+                        }
+                    }
+                }, {
+                    field: "Strasse",
+                    title: "Strasse",
+                    filterable: {
+                        extra: false,
+                        operators: {
+                            string: {
+                                startswith: "Beginnt mit",
+                                eq: "Ist gleich"
+                            }
+                        }
+                    }
+                }, {
+                    field: "Plz",
+                    title: "PLZ",
+                    width: 85,
+                    filterable: {
+                        extra: false,
+                        operators: {
+                            string: {
+                                startswith: "Beginnt mit",
+                                eq: "Ist gleich"
+                            }
+                        }
+                    }
+                }, {
+                    field: "Ort",
+                    title: "Ort",
+                    filterable: {
+                        extra: false,
+                        operators: {
+                            string: {
+                                startswith: "Beginnt mit",
+                                eq: "Ist gleich"
+                            }
+                        }
+                    }
+                }, {
+                    field: "MandantBenutzerGruppeName",
+                    title: "Gruppe",
+                    filterable: {
+                        ui: mandantGruppeTypeFilter,
+                        extra: false,
+                        operators: {
+                            string: {
+                                eq: "Ist gleich"
+                            }
+                        }
+                    }
+                }, {
+                    field: "MitgliedschaftTypeName",
+                    title: "Mitgliedschaft",
+                    filterable: {
+                        ui: mitgliedTypeFilter,
+                        extra: false,
+                        operators: {
+                            string: {
+                                eq: "Ist gleich"
+                            }
+                        }
+                    }
+                }, {
+                    field: "RechnungsDatumString",
+                    title: "Rechnung",
+                    format: "{0:dd.MM.yyyy}",
+                    attributes: { style: "text-align:center" },
+                    width: 120,
+                    filterable: {
+                        //ui: mitgliedTypeFilter,
+                        extra: false,
+                        operators: {
+                            date: {
+                                eq: "Ist gleich",
+                                gte: "Ist grösser oder gleich",
+                                lte: "Ist kleiner oder gliech"
+                            }
+                        }
+                    }
+                }
+            ],
+            edit: function(e) {
+                e.container.kendoWindow("title", "Mitglied");
+
+                $(e.container).find("select[name='AnredeId']")
+                    .data("kendoDropDownList")
+                    .bind("change", function() {
+                        var dataItem = this.dataItem(this.selectedIndex);
+                        e.model.Anrede = dataItem.Value;
+                        e.model.AnredeId = dataItem.Id;
+                    });
+
+                $(e.container).find("select[name='MitgliedschaftTypeId']")
+                    .data("kendoDropDownList")
+                    .bind("change", function() {
+                        var dataItem = this.dataItem(this.selectedIndex);
+                        e.model.MitgliedschaftTypeName = dataItem.Value;
+                        e.model.MitgliedschaftTypeId = dataItem.Id;
+                    });
+
+                $(e.container).find("select[name='MandantBenutzerGruppeId']")
+                    .data("kendoDropDownList")
+                    .bind("change", function() {
+                        var dataItem = this.dataItem(this.selectedIndex);
+                        e.model.MandantBenutzerGruppeName = dataItem.Value;
+                        e.model.MandantBenutzerGruppeId = dataItem.Id;
+                    });
+                $(e.container).find("select[name='LandId']")
+                    .data("kendoDropDownList")
+                    .bind("change", function() {
+                        var dataItem = this.dataItem(this.selectedIndex);
+                        e.model.LandName = dataItem.Value;
+                        e.model.LandId = dataItem.Id;
+                    });
+            },
+            dataBound: function(e) {
+                var g = $("#gridU");
+                g.find(".k-grid-edit").attr("title", "Bearbeiten");
+                g.find(".k-grid-delete").attr("title", "Löschen");
+                g.find(".k-plus").attr("title", "Erweitern");
+            }
+        });
+
+        $(window).resize(function() {
+            resizeSplitter();
+        });
+
+        resizeSplitter();
+    });
+
+    function detailInit(e) {
+        var detailRow = e.detailRow;
+
+        detailRow.find(".tabstrip").kendoTabStrip({
+            animation: {
+                open: { effects: "fadeIn" }
+            }
+        });
+    }
+
+    var dsAnrede = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: "/main/getAnreden",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+            }
+        },
+        error: function(e) {
+            alert("DataSource Anrede: " + e.status + " " + e.statusText);
+        }
+    });
+
+    var dsMitgliedschaft = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: "/main/getMitgliedschaften",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+            }
+        },
+        error: function(e) {
+            alert("DataSource Anrede: " + e.status + " " + e.statusText);
+        }
+    });
+
+    var dsMaGruppe = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: "/main/getMandantenGruppen",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+            }
+        },
+        error: function(e) {
+            alert("DataSource MaGruppe: " + e.status + " " + e.statusText);
+        }
+    });
+
+    var dsLaender = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: "/main/getLaender",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+            }
+        },
+        error: function(e) {
+            alert("DataSource Laender: " + e.status + " " + e.statusText);
+        }
+    });
+
+    function anredeFilter(element) {
+        element.kendoDropDownList({
+            dataSource: dsAnrede,
+            dataTextField: "Value",
+            dataValueField: "Id"
+        });
+    }
+
+    function mitgliedTypeFilter(element) {
+        element.kendoDropDownList({
+            dataSource: dsMitgliedschaft,
+            dataTextField: "Value",
+            dataValueField: "Id"
+        });
+    }
+
+    function mandantGruppeTypeFilter(element) {
+        element.kendoDropDownList({
+            dataSource: dsMaGruppe,
+            dataTextField: "Value",
+            dataValueField: "Id"
+        });
+    }
+
+    function excelExport() {
+        var title = "Mitglieder";
+        var id = guid();;
+        var filter = $("#gridU").data("kendoGrid").dataSource._filter;
+
+        var data = {
+            filter: filter,
+            guid: id
+        };
+
+        $.ajax({
+            url: "/mitglieder/exportMitglieder",
+            type: "POST",
+            dataType: "json",
+            data: JSON.stringify(data),
+            contentType: "application/json; charset=utf-8",
+            success: function(result) {
+                window.location = kendo.format("{0}?guid={1}", "/mitglieder/getCsv", id);
+            }
+        });
+    }
+
+    function resizeSplitter() {
+        $("#gridU").height($(window).height() - 75 + "px");
+    };
+</script>
+
+<style scoped>
+    .k-detail-cell .k-tabstrip .k-content { padding: 0.2em; }
+    .employee-details { float: left; margin: 10px; }
+    .employee-details ul { list-style: none; margin: 15px; padding: 0; }
+    .employee-details ul li { margin: 0; line-height: 1.7em; }
+    .employee-details label { display: inline-block; width: 100px; padding-right: 10px; text-align: right; font-style: normal; }
+    .employee-details span { display: inline-block; padding-right: 10px; font-style: normal; font-weight: bold; }
+    .k-edit-form-container { width: 950px; }
+    .lcontainer { float:left;width: 450px; border-right: 1px solid rgba(199, 199, 213, 0.70) }
+    .rcontainer { float:left; width: 450px; }
+    .k-edit-form-container input { width: 250px; }
+</style>

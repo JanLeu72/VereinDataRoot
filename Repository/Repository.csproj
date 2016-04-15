@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{379CE120-BCEB-40C4-9BB5-74E348DC296D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Repository</RootNamespace>
+    <AssemblyName>Repository</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="LinqKit">
+      <HintPath>..\packages\LINQKit.1.1.1\lib\net45\LinqKit.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Context\Benutzer.cs" />
+    <Compile Include="Context\MandantenGruppen.cs" />
+    <Compile Include="Context\Menue.cs" />
+    <Compile Include="Context\Mitglieder.cs" />
+    <Compile Include="Context\Utilitys.cs" />
+    <Compile Include="Context\VereinsAdressen.cs" />
+    <Compile Include="Context\Vorstand.cs" />
+    <Compile Include="Data\Anrede.cs">
+      <DependentUpon>ModelVerein.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Benutzer_Benutzer.cs">
+      <DependentUpon>ModelBenutzerModul.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Laender.cs">
+      <DependentUpon>ModelVerein.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Mandant.cs">
+      <DependentUpon>ModelVerein.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\MandantAdressTypen.cs">
+      <DependentUpon>ModelBenutzerModul.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\MandantenAdressen.cs">
+      <DependentUpon>ModelBenutzerModul.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\MandantenBenutzerGruppen.cs">
+      <DependentUpon>ModelVerein.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\MandantenBenutzerModule_Benutzer.cs">
+      <DependentUpon>ModelBenutzerModul.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\MandantenModule_Benutzer.cs">
+      <DependentUpon>ModelBenutzerModul.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Mandanten_Benutzer.cs">
+      <DependentUpon>ModelBenutzerModul.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Mitglied.cs">
+      <DependentUpon>ModelVerein.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\MitgliedschaftType.cs">
+      <DependentUpon>ModelVerein.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ModelBenutzerModul.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelBenutzerModul.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ModelBenutzerModul.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelBenutzerModul.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ModelBenutzerModul.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelBenutzerModul.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ModelVerein.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelVerein.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ModelVerein.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelVerein.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\ModelVerein.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelVerein.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Module_Benutzer.cs">
+      <DependentUpon>ModelBenutzerModul.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\Ressort.cs">
+      <DependentUpon>ModelVerein.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\RessortMandantMitglieder.cs">
+      <DependentUpon>ModelVerein.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Data\TreeNavigation.cs">
+      <DependentUpon>ModelBenutzerModul.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EntityDeploy Include="Data\ModelVerein.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelVerein.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="Data\ModelBenutzerModul.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ModelBenutzerModul.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Data\ModelBenutzerModul.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelBenutzerModul.edmx</DependentUpon>
+      <LastGenOutput>ModelBenutzerModul.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Data\ModelBenutzerModul.edmx.diagram">
+      <DependentUpon>ModelBenutzerModul.edmx</DependentUpon>
+    </None>
+    <None Include="Data\ModelBenutzerModul.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelBenutzerModul.edmx</DependentUpon>
+      <LastGenOutput>ModelBenutzerModul.cs</LastGenOutput>
+    </None>
+    <None Include="Data\ModelVerein.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelVerein.edmx</DependentUpon>
+      <LastGenOutput>ModelVerein.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Data\ModelVerein.edmx.diagram">
+      <DependentUpon>ModelVerein.edmx</DependentUpon>
+    </None>
+    <None Include="Data\ModelVerein.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ModelVerein.edmx</DependentUpon>
+      <LastGenOutput>ModelVerein.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Log\Log.csproj">
+      <Project>{dc6b4e33-49c6-4184-a3fc-686b1948d35f}</Project>
+      <Name>Log</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Models\Models.csproj">
+      <Project>{eb993102-9083-44c5-b732-6de9f289b2cf}</Project>
+      <Name>Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

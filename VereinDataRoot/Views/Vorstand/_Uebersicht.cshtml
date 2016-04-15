@@ -1,0 +1,208 @@
+﻿<div style="padding:10px">
+    <span id="undo" class="k-button">Neues Vorstandsmitglied erfassen</span>
+</div>
+<div style="padding: 10px">
+    <div id="gridV"></div>
+</div>
+<div id="winV">
+    <form id="formV">
+        <div class="k-edit-label">
+            <label for="VorstandModel">Mitglied</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text" ame="VorstandModel" id="VorstandModel" style="width: 300px" />
+        </div>
+        <div class="k-edit-label">
+            <label for="RessortId">Ressort</label>
+        </div>
+        <div class="k-edit-field">
+            <select name="RessortId" id="RessortId" style="width: 300px"></select>
+        </div>
+        <div class="k-edit-label">
+            <input type="submit" value="Speichern" id="btnSaveV" class="k-button k-primary"/>
+        </div>
+        <div class="k-edit-field">
+            <input type="hidden" name="MitgliedId" id="MitgliedId"/>
+            <span id="messV"></span>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    var gridV;
+    $(document).ready(function () {
+        var dsV = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "/vorstand/loadVorstand",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8"
+                },
+                destroy: {
+                    url: "/vorstand/delVorstandMitglied",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8"
+                },
+                parameterMap: function (data, operation) {
+                    if (operation === "read") {
+                        return JSON.stringify(data);
+                    }
+                    if (operation !== "read") {
+                        return kendo.stringify({ model: data });
+                    }
+                }
+            },
+            //group: {
+            //    field: "RessortName"
+            //},
+            schema: {
+                model: {
+                    id: "VorstandId",
+                    fields: {
+                        RessortId: { editable: true }
+                    }
+                }
+            },
+            autoSync: false,
+            error: function(e) {
+                alert(e.status + " " + e.statusText);
+            }
+        });
+
+        gridV = $("#gridV").kendoGrid({
+            dataSource: dsV,
+            editable: {
+                mode: "popup",
+                update: false,
+                destroy: true,
+                confirmation: "Dieses Vorstandsmitglied unwiderruflich löschen?"
+            },
+            pageable: false,
+            scrollable: false,
+            columns: [
+                {
+                    command: [
+                        { name: "destroy", text: "" }
+                    ],
+                    titel: "&nbsp;",
+                    width: 47
+                }, {
+                    field: "RessortName",
+                    title: "Ressort"
+                }, {
+                    field: "MitgliedAnrede",
+                    title: "Anrede",
+                    width: 100
+                }, {
+                    field: "MitgliedName",
+                    title: "Name"
+                    
+                }, {
+                    field: "MitgliedVorname",
+                    title: "Vorname"
+                }, {
+                    field: "MitgliedStrasse",
+                    title: "Strasse"
+                }, {
+                    field: "MitgliedPlz",
+                    title: "PLZ",
+                    width: 85
+                }, {
+                    field: "MitgliedOrt",
+                    title: "Ort"
+                }
+            ]
+        });
+    });
+
+    var dsRessort = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: "/main/getRessorts",
+                dataType: "json",
+                type: "POST",
+                contentType: "application/json; charset=utf-8"
+            }
+        },
+        error: function (e) {
+            alert("DataSource Anrede: " + e.status + " " + e.statusText);
+        }
+    });
+
+    $("#VorstandModel").kendoAutoComplete({
+            dataSource: new kendo.data.DataSource({
+                serverFiltering: true,
+                serverPaging: true,
+                transport: {
+                    read: {
+                        url: "/vorstand/getMitglied",
+                        type: "POST",
+                        data: function() {
+                            return { searchText: $("#VorstandModel").data("kendoAutoComplete").value() };
+                        },
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'json'
+                    },
+                    parameterMap: function(options) {
+                        return kendo.stringify(options);
+                    }
+                }
+            }),
+            template: '<div style="font-weight: bold; height: 15px">${ data.MitgliedAnrede } ${ data.MitgliedVorname } ${ data.MitgliedName } </div><div style="font-size: 10px">${ data.MitgliedStrasse } ${ data.MitgliedPlz } ${ data.MitgliedOrt }</div>',
+            dataTextField: "VorstandName",
+            filter: "contains",
+            placeholder: "Suche nach einem Mitglied",
+            select: function (selectet) {
+                var item = this.dataItem(selectet.item.index());
+                if (selectet.item == null) return;
+                $("#MitgliedId").val(item.MitgliedId);
+            }
+        });
+
+    var drpR = $("#RessortId").kendoDropDownList({
+        dataTextField: "Value",
+        dataValueField: "Id",
+        dataSource: dsRessort
+    });
+
+    var winV = $("#winV");
+    $("#undo").bind("click", function () {
+        winV.data("kendoWindow").open().center();
+    });
+
+    if (!winV.data("kendoWindow")) {
+        winV.kendoWindow({
+            width: "600px",
+            title: "Neues Vorstandsmitglied erfassen",
+            visible: false,
+            actions: [
+                "Pin",
+                "Minimize",
+                "Maximize",
+                "Close"
+            ]
+        });
+    }
+
+    $("#formV").on("submit", function () {
+            var obj = $(this).serializeArray();
+            $.ajax({
+                method: "POST",
+                url: "/vorstand/setVorstandMitglied",
+                data: obj
+            }).done(function (data) {
+                if (data) {
+                    winV.data("kendoWindow").close();
+                    gridV.data("kendoGrid").dataSource.read();
+                    $("#VorstandModel").val("");
+                    drpR.data("kendoDropDownList").select(0);
+                    $("#MitgliedId").val(0);
+                } else {
+                    $("#messV").html("Fehler beim speichern!");
+                }
+            });
+            return false;
+    });
+</script>

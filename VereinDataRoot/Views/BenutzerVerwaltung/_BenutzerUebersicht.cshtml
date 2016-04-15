@@ -1,0 +1,169 @@
+﻿<div style="padding: 20px">
+    <h2>Benutzer verwalten</h2>
+    <div id="gridBenutzer"></div>
+    <script type="text/x-kendo-template" id="template">
+        <div>
+            <div class="moduleGrid#= BenutzerId #"></div>
+        </div>
+    </script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var dsBenutzer = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: "/benutzerVerwaltung/loadBenutzers",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8"
+                },
+                update: {
+                    url: "/benutzerVerwaltung/setBenutzer",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8"
+                },
+                destroy: {
+                    url: "/benutzerVerwaltung/delBenutzer",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8"
+                },
+                create: {
+                    url: "/benutzerVerwaltung/setBenutzer",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8"
+                },
+                parameterMap: function(data, operation) {
+                    if (operation != "read") {
+                        return kendo.stringify({ model: data });
+                    }
+                }
+            },
+            pageSize: 20,
+            schema: {
+                model: {
+                    id: "BenutzerId",
+                    fields: {
+                        BenutzerId: { editable: false },
+                        BenutzerName: { type: "string", editable: true },
+                        BenutzerMail: { type: "string", editable: true },
+                        ErstelltAm: { type: "date", editable: false },
+                        LetztesLogin: { type: "date", editable: false }
+                    }
+                }
+            },
+            error: function(e) {
+                alert(e.status + ' ' + e.statusText);
+            }
+        });
+
+        $("#gridBenutzer").kendoGrid({
+            dataSource: dsBenutzer,
+            sortable: true,
+            pageable: true,
+            detailTemplate: kendo.template($("#template").html()),
+            editable: {
+                mode: "popup",
+                //template: $("#order_bag").html(),
+                confirmation: "Benutzer wirklich löschen?"
+            },
+            save: function (e) {
+                setTimeout(function() {
+                    $("#gridBenutzer").data('kendoGrid').dataSource.read();
+                }, 500);
+            },
+            detailInit: detailInit,
+            toolbar: ["create"],
+            columns: [{
+                    field: "BenutzerName",
+                    title: "Anzeige Name"
+                }, {
+                    field: "BenutzerMail",
+                    title: "Mail"
+                }, {
+                    field: "ErstelltAm",
+                    title: "Erstellt am",
+                    type: "date",
+                    format: "{0:dd.MM.yyyy HH:mm}"
+
+                }, {
+                    field: "LetztesLogin",
+                    title: "Letzte Anmeldung",
+                    type: "date",
+                    format: "{0:dd.MM.yyyy HH:mm}"
+                }, {
+                    field: "Aktive",
+                    title: "Aktiv"
+                }, {
+                    command: [{ name: "edit", text: "" }, { name: "destroy", text: "" }],
+                    titel: "&nbsp;",
+                    width: 93
+                }
+            ]
+        });
+
+        function detailInit(e) {
+            var detailRow = e.detailRow;
+
+            detailRow.find(".moduleGrid" + e.data.BenutzerId).kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: "/benutzerVerwaltung/loadBenutzerModule",
+                            dataType: "json",
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8"
+                        },
+                        parameterMap: function(data, operation) {
+                            if (operation === "read") {
+                                return JSON.stringify(data);
+                            }
+                        }
+                    },
+                    serverFiltering: true,
+                    filter: { field: "BenutzerId", operator: "eq", value: e.data.BenutzerId }
+                },
+                scrollable: false,
+                sortable: false,
+                pageable: false,
+                columns: [
+                    {
+                        field: "ModulName",
+                        title: "ModulName",
+                        width: "170px"
+                    }, {
+                        field: "IsSelectet",
+                        title: "IsSelectet",
+                        template: '<div class="center"><input onclick="checkModul(' + e.data.BenutzerId + ', ${ ModulId } , ${ IsSelectet })"  type="checkbox" #= IsSelectet ? checked="checked" : "" #  /><div>'
+                    }
+                ]
+            });
+
+        }
+    });
+
+    function checkModul(id, mId, chk) {
+        var obj = {
+            benutzerId: id,
+            modulId: mId,
+            check: (chk ? false : true)
+        };
+        var grid = $(".moduleGrid" + id).data('kendoGrid');
+
+        $.ajax({
+            type: 'POST',
+            url: '/benutzerVerwaltung/setBenutzerModul',
+            dataType: 'json',
+            contentType: 'application/json',
+            async: false,
+            data: JSON.stringify(obj)
+        }).done(function (data) {
+            if (!data) {
+                alert("Fehler beim Speichern!");
+            }
+            grid.dataSource.read();
+        });
+    }
+    </script>
+</div>

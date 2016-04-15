@@ -1,0 +1,21 @@
+﻿@{
+   Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error - Verein</title>
+    <link href="@Url.Content("~/content/screen.css")" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<br />
+<br />
+<div style="margin: 0 auto; padding:0; width: 500px">
+    <div class="errordiv">
+        @ViewData["Meldung"]<br /><br />
+        @ViewData["NeueAnmeldung"]<br /><br />
+    </div>
+</div>
+</body>
+</html>

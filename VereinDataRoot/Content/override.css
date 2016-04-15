@@ -1,0 +1,15 @@
+﻿/*Kendo UI Overrides*/
+.k-grid tbody .k-button-icontext .k-icon {
+    margin: 0;
+    vertical-align: middle;
+}
+
+.k-grid tbody .k-button {
+    min-width: 28px;
+    width: 28px;
+    padding: .1em .3em .2em;
+}
+
+.k-grid td {
+    font-size: 0.81em;
+}

@@ -1,0 +1,43 @@
+﻿@using VereinDataRoot.ViewModels
+@model MitgliedImportCounterViewModel
+
+<div>
+    <div style="margin: 20px">
+        <h2>Übersicht Import</h2>
+        <div>
+            <ul class="wizard">
+                <li>1. Datei hochladen</li>
+                <li>2. Spalten zuweisen</li>
+                <li class="active">3. Überprüfen</li>
+            </ul>
+        </div>
+        <div style="margin: 10px 0">
+
+        </div>
+        <div style="margin: 10px 0">Anzahl erfolgreich importierter Mitglieder: <span style="font-weight: bold">@Model.TotalImport</span></div>
+        <div style="margin: 10px 0">Anzahl nicht importierter Mitglieder: <span style="font-weight: bold">@Model.TotalFehler</span></div>
+    </div>
+    @if (Model.MitgliederFehler.Count > 0)
+    {
+        <div style="margin: 10px 0">
+            <table>
+                <tr>
+                    <th>Anrede</th>
+                </tr>
+                @foreach (MitgliedImportErrorViewModel item in Model.MitgliederFehler)
+                {
+                    <tr>
+                        <td>@item.Anrede</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+    else
+    {
+        <div style="margin: 10px 0">
+            @Html.ActionLink("Zu den Mitgliedern", "Index", "Mitglieder", null, new { @class = "k-button k-primary k-state-selected" })
+        </div>
+    }
+</div>
+

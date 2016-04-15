@@ -1,0 +1,74 @@
+﻿@model Models.VereinAdresse
+<div style="padding: 10px">
+    <h1>Adresse des Vereins</h1>
+</div>
+<div style="padding: 10px">
+    <form id="formVa">
+        <div class="formrow">
+            <span class="formlabel">Name Verein:</span>
+            <label>@Model.MandantName</label>
+        </div>
+        <div class="formrow">
+            <span class="formlabel">Postfach:</span>
+            @Html.TextBoxFor(m => m.Postfach, new { @class = "k-textbox" })
+        </div>
+        <div class="formrow">
+            <span class="formlabel">Name:</span>
+            @Html.TextBoxFor(m => m.Name, new { @class = "k-textbox" })
+        </div>
+        <div class="formrow">
+            <span class="formlabel">Vorname:</span>
+            @Html.TextBoxFor(m => m.Vorname, new { @class = "k-textbox" })
+        </div>
+        <div class="formrow">
+            <span class="formlabel">Strasse:</span>
+            @Html.TextBoxFor(m => m.Strasse, new { @class = "k-textbox" })
+        </div>
+        <div class="formrow">
+            <span class="formlabel">PLZ:</span>
+            @Html.TextBoxFor(m => m.Plz, new { @class = "k-textbox" })
+        </div>
+        <div class="formrow">
+            <span class="formlabel">Ort:</span>
+            @Html.TextBoxFor(m => m.Ort, new { @class = "k-textbox" })
+        </div>
+        <div class="formrow">&nbsp;</div>
+        <div class="formrow">
+            @Html.HiddenFor(m => m.VereinAdresseId)
+            <input type="submit" value="Speichern" class="k-button k-primary" /> &nbsp;&nbsp;<span id="mesVa" style="display: none"></span>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#formVa").on("submit", function () {
+            var obj = $(this).serializeArray();
+            $.ajax({
+                method: "POST",
+                url: "/adressenVerein/SetVereinAdresse",
+                data: obj
+            }).done(function (page) {
+                $("#mesVa").html(page.FormMessage).fadeIn().fadeOut(3000);
+            });
+            return false;
+        });
+    });
+</script>
+
+<style scoped="scoped">
+    .k-textbox {
+        width: 300px;
+    }
+
+    .formlabel {
+        display: inline-block;
+        width: 150px;
+        text-align: right;
+        padding-right: 5px;
+    }
+
+    .formrow {
+        margin: 5px 0;
+    }
+</style>

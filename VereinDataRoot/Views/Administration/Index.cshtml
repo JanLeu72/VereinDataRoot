@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Administration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="horizontal">
+    <div>
+        <div style="text-align: center; font-size: 15px; font-weight: bold; margin: 10px 0">Administration</div>
+        @{
+            Html.RenderAction("TreeNav", "Main", new { id = 1});
+        }
+        @{
+            Html.RenderAction("TreeNav", "Main", new { id = 100 });
+        }
+        @{
+            Html.RenderAction("TreeNav", "Main", new { id = 4 });
+        }
+        @{
+            Html.RenderAction("TreeNav", "Main", new { id = 400 });
+        }
+        @{
+        Html.RenderAction("TreeNav", "Main", new { id = 600 });
+        }
+    </div>
+    <div>
+        <div id="content"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".nav").on("click", function () {
+            loadContetn($(this).data("nav"));
+            return false;
+        });
+    });
+
+    function loadContetn(path) {
+        $("#content").html("");
+        $.ajax({
+            url: path,
+            cache: false
+        }).done(function (page) {
+            $("#content").html(page);
+        });
+    }
+</script>
+

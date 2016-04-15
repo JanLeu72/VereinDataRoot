@@ -1,0 +1,34 @@
+﻿@using Models
+@model IEnumerable<TreeNavigationModel>
+
+@helper TreeView(IEnumerable<TreeNavigationModel> navitree)
+{
+    foreach (TreeNavigationModel item in navitree)
+    {
+        <li data-expanded="true">
+            @if (item.SubNavigations.Count == 0)
+            {
+                <span data-nav="/@item.ControllerMvc/@item.ActionMvc" class="nav">@item.DisplayName</span>
+            }
+            else
+            {
+                @item.DisplayName
+                <ul>@TreeView(item.SubNavigations)</ul>
+            }
+        </li>
+    }
+}
+
+<div style="padding: 0 3px">
+    <ul class="tree">
+        @TreeView(Model)
+    </ul>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".tree").kendoTreeView();
+
+    });
+</script>
+

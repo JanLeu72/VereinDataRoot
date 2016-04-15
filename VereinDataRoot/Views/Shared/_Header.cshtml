@@ -1,0 +1,37 @@
+﻿@using Models
+@model VereinDataRoot.ViewModels.HeaderViewModel
+
+<div id="header" class="k-header">
+    <div style="float: left" class="mandanttitle">@Model.VereinName</div>
+    <div style="float: left">
+        <ul class="navigation">
+            @foreach (MandantenBenutzerNavigation item in Model.Navigation)
+            {
+                <li>@Html.ActionLink(item.ModulName, item.ActionName, item.ControlerName, null, new {@class = "k-link"})</li>
+            }
+        </ul>
+    </div>
+    @*<div style="float: right">
+        <select id="styles">
+            <option>bootstrap</option>
+            <option>black</option>
+        </select>
+    </div>*@
+    <div style="float: right">
+        <ul class="navigation">
+            <li>
+                <a href="/adminoptions/index" title="Einstellungen" class="k-link">
+                    <span>@Model.UserName.Trim()</span>
+                    <span class="k-icon k-i-custom"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <p style="clear: both"></p>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".navigation").kendoMenu();
+    });
+</script>

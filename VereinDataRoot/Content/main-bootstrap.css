@@ -1,0 +1,32 @@
+﻿body {
+    color: black;
+    background-color: #f5f0f7;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+ul.navigation li {
+    border-right: 1px solid #afaeae;
+    border-right: 1px solid rgba(175, 174, 174, 0.50);    
+}
+
+ul.navigation li:first-child {
+    border-left: 1px solid rgba(175, 174, 174, 0.50);
+}
+
+ul.navigation li:hover {
+    background-color: rgba(175, 174, 174, 0.15);
+}
+
+/*http://codepen.io/tag/wizard/*/
+.wizard li {
+  background-color: #E4E4E4;
+  display: inline;
+  padding: 10px 30px 10px 30px;
+}
+
+.wizard li.active {
+  background-color: #7eed5a;
+}

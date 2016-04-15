@@ -1,0 +1,59 @@
+﻿@model VereinDataRoot.ViewModels.PasswortViewModel
+<div style="padding: 10px">
+    <h1>Passwort ändern</h1>
+</div>
+<div style="padding: 10px">
+    <form id="formPw">
+        <div class="formrow">
+            <span class="formlabel">Passwort:</span>
+            @Html.PasswordFor(m => m.Passwort1, new {@class = "k-textbox"})
+        </div>
+        <div class="formrow">
+            <span class="formlabel">Passwort wiederholen:</span>
+            @Html.PasswordFor(m => m.Passwort2, new {@class = "k-textbox"})
+        </div>
+        <div class="formrow">&nbsp;</div>
+        <div class="formrow">
+            <input type="submit" value="Speichern" class="k-button k-primary"/> &nbsp;&nbsp;<span id="mesPa" style="display: none"></span>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#formPw").on("submit", function () {
+            var obj = $(this).serializeArray();
+            var p1 = $("#Passwort1").val();
+            var p2 = $("#Passwort2").val();
+            if (p1 == p2) {
+                $.ajax({
+                    method: "POST",
+                    url: "/adminOptions/setPw",
+                    data: obj
+                }).done(function (page) {
+                    $("#mesPa").html(page).fadeIn().fadeOut(3000);
+                });
+            } else {
+                $("#mesPa").html("Die Passwörter stimmen nicht überein!").fadeIn().fadeOut(3000);
+            }
+            return false;
+        });
+    });
+</script>
+
+<style scoped="scoped">
+    .k-textbox {
+        width: 300px;
+    }
+
+    .formlabel {
+        display: inline-block;
+        width: 150px;
+        text-align: right;
+        padding-right: 5px;
+    }
+
+    .formrow {
+        margin: 5px 0;
+    }
+</style>

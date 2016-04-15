@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewBag.Title = "Vorstand";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="horizontal">
+    <div>
+        <div style="text-align: center; font-size: 15px; font-weight: bold; margin: 10px 0">Vorstand</div>
+        @{
+            Html.RenderAction("TreeNav", "Main", new { id = 300 });
+        }
+    </div>
+    <div>
+        <div id="content"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".nav").on("click", function () {
+            loadContetn($(this).data("nav"));
+            return false;
+        });
+        loadContetn("/vorstand/uebersicht");
+    });
+
+    function loadContetn(path) {
+        $("#content").html("");
+        $.ajax({ url: path, method: "POST" }).done(function (page) {
+            $("#content").html(page);
+        });
+    }
+</script>
+

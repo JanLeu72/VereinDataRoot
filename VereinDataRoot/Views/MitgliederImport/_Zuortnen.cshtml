@@ -1,0 +1,56 @@
+﻿@model VereinDataRoot.ViewModels.FelderZuordnerViewModel
+
+<div>
+    <div style="margin: 0 10px">
+        <h2>Spalten zuortnen</h2>
+        <div>
+            <ul class="wizard">
+                <li>1. Datei hochladen</li>
+                <li class="active">2. Spalten zuweisen</li>
+                <li>3. Überprüfen</li>
+            </ul>
+        </div>
+        <div>
+
+        </div>
+        <form action="/mitgliederImport/csvFileSave" method="post">
+            <table>
+                @foreach (string item in Model.FeldNamen)
+                {
+                    if (!string.IsNullOrWhiteSpace(item))
+                    {
+                        <tr>
+                            <td style="padding-right: 5px">@item.Trim():</td>
+                            <td>@Html.DropDownList(item.Trim(), new SelectList(Model.SelectFeldName))</td>
+                        </tr>
+                    }
+                }
+                <tr>
+                    <td colspan="2" style="padding: 20px 0">
+                        <input type="submit" value="Speichern" class="k-button k-primary"/>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#csvfile").kendoUpload();
+        $("select").kendoDropDownList();
+
+        $("form").on("submit", function() {
+            var obj = $(this).serializeArray();
+            $.ajax({
+                method: "POST",
+                url: "/MitgliederImport/CsvFileSave",
+                data: obj
+            }).done(function (page) {
+                if (page) {
+                    window.loadContetn("/MitgliederImport/ImportUebersicht");
+                }
+            });
+            return false;
+        });
+    });
+</script>

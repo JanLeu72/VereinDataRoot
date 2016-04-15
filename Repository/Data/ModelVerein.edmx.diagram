@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="65f2d3122d6d406098160a0efcd5e7fc" Name="Diagram1">
+        <EntityTypeShape EntityType="VereinDBModel.Anrede" Width="1.5" PointX="7" PointY="0.625" />
+        <EntityTypeShape EntityType="VereinDBModel.Mandant" Width="2.5" PointX="0.5" PointY="0.625" />
+        <EntityTypeShape EntityType="VereinDBModel.Mitglied" Width="2.25" PointX="4" PointY="0.625" />
+        <EntityTypeShape EntityType="VereinDBModel.MitgliedschaftType" Width="3.375" PointX="7" PointY="2.75" />
+        <AssociationConnector Association="VereinDBModel.FK_tblMitglieder_tblAnrede" />
+        <AssociationConnector Association="VereinDBModel.FK_tblMitglieder_tblMandanten" />
+        <AssociationConnector Association="VereinDBModel.FK_tblMitglieder_tblMitgliedschaftType" />
+        <EntityTypeShape EntityType="VereinDBModel.MandantenBenutzerGruppen" Width="2.25" PointX="0.5" PointY="3.875" />
+        <AssociationConnector Association="VereinDBModel.FK_tblMandantenGruppen_tblMandanten" />
+        <AssociationConnector Association="VereinDBModel.FK_tblMitglieder_tblMandantenBenutzerGruppen1" />
+        <EntityTypeShape EntityType="VereinDBModel.Laender" Width="1.5" PointX="0.75" PointY="6.875" />
+        <AssociationConnector Association="VereinDBModel.FK_tblMitglieder_tblLaender" />
+        <EntityTypeShape EntityType="VereinDBModel.RessortMandantMitglieder" Width="2" PointX="7" PointY="5.5" />
+        <EntityTypeShape EntityType="VereinDBModel.Ressort" Width="2" PointX="4.75" PointY="7.875" />
+        <AssociationConnector Association="VereinDBModel.FK_tblRessortMandantMitglieder_tblMitglieder" />
+        <AssociationConnector Association="VereinDBModel.FK_tblRessortMandantMitglieder_tblRessorts" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
