@@ -8,7 +8,6 @@
         public int MandantId { get; set; }
         public int AnredeId { get; set; }
         public string Anrede { get; set; }
-        
         public string Vorname { get; set; }
         public string Name { get; set; }
         public string ZusatzName { get; set; }
@@ -30,6 +29,6 @@
         public string Bemerkung { get; set; }
         public int LandId { get; set; }
         public string LandName { get; set; }
-        
+        public bool Selected { get; set; }
     }
 }

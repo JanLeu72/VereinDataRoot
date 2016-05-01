@@ -6,12 +6,12 @@
             @Html.DropDownListFor(m => m.AnredeId, new SelectList(Model.Anreden, "Id", "Value", Model.AnredeId))
         </div>
         <div class="formrow">
-            <span class="formlabel">Name:</span>
-            @Html.TextBoxFor(m => m.Name, new {@class = "k-textbox"})
-        </div>
-        <div class="formrow">
             <span class="formlabel">Vorname:</span>
             @Html.TextBoxFor(m => m.Vorname, new { @class = "k-textbox" })
+        </div>
+        <div class="formrow">
+            <span class="formlabel">Name:</span>
+            @Html.TextBoxFor(m => m.Name, new {@class = "k-textbox"})
         </div>
         <div class="formrow">
             <span class="formlabel">Zusatz Name:</span>

@@ -460,23 +460,23 @@
                                          select m).Skip(request.Skip).Take(request.Take);
                                 }
                                 break;
-                            case "RechnungsDatumString":
-                                if (request.Sorting[0].Dir == "asc")
-                                {
-                                    l = (from m in _entities.Mitglieds.AsExpandable().Where(predicate)
-                                        orderby m.RechnungsDatum ascending
-                                        select m).Skip(request.Skip).Take(request.Take);
-                                }
-                                else
-                                {
-                                    l = (from m in _entities.Mitglieds.AsExpandable().Where(predicate)
-                                        orderby m.RechnungsDatum descending
-                                        select m).Skip(request.Skip).Take(request.Take);
-                                }
-                                break;
+                            //case "RechnungsDatumString":
+                            //    if (request.Sorting[0].Dir == "asc")
+                            //    {
+                            //        l = (from m in _entities.Mitglieds.AsExpandable().Where(predicate)
+                            //            orderby m.RechnungsDatum ascending
+                            //            select m).Skip(request.Skip).Take(request.Take);
+                            //    }
+                            //    else
+                            //    {
+                            //        l = (from m in _entities.Mitglieds.AsExpandable().Where(predicate)
+                            //            orderby m.RechnungsDatum descending
+                            //            select m).Skip(request.Skip).Take(request.Take);
+                            //    }
+                            //    break;
                             default:
                                 l = (from m in _entities.Mitglieds.AsExpandable().Where(predicate)
-                                    orderby m.Nachname ascending
+                                    orderby m.Vorname ascending
                                     select m).Skip(request.Skip).Take(request.Take);
                                 break;
                         }
@@ -484,7 +484,7 @@
                     else
                     {
                         l = (from m in _entities.Mitglieds.AsExpandable().Where(predicate)
-                            orderby m.Nachname ascending
+                            orderby m.Vorname ascending
                             select m).Skip(request.Skip).Take(request.Take);
                     }
 

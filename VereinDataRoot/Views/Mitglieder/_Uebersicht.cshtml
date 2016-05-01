@@ -64,17 +64,6 @@
         </div>
 
         <div class="k-edit-label">
-            <label for="Nachname">Name</label>
-        </div>
-        <div class="k-edit-field">
-            <input type="text"
-                   name="Name"
-                   data-type="string"
-                   data-bind="value:Name"
-                   class="k-textbox" />
-        </div>
-
-        <div class="k-edit-label">
             <label for="Vorname">Vorname</label>
         </div>
         <div class="k-edit-field">
@@ -82,6 +71,17 @@
                    name="Vorname"
                    data-type="string"
                    data-bind="value:Vorname"
+                   class="k-textbox" />
+        </div>
+        
+        <div class="k-edit-label">
+            <label for="Nachname">Name</label>
+        </div>
+        <div class="k-edit-field">
+            <input type="text"
+                   name="Name"
+                   data-type="string"
+                   data-bind="value:Name"
                    class="k-textbox" />
         </div>
 
@@ -262,7 +262,7 @@
 </script>
 
 <script type="text/javascript">
-    var gridU;
+    var gridU, mitglieder = [];
     $(document).ready(function() {
         var ds = new kendo.data.DataSource({
             transport: {
@@ -325,7 +325,8 @@
                 model: {
                     id: "MitgliedId",
                     fields: {
-                        MitgliedId: { editable: false },
+                        Selected : {},
+                        MitgliedId: { type: "boolen", editable: true, nullable: true },
                         Anrede: { type: "string", editable: true, nullable: true },
                         Vorname: { type: "string", editable: true, validation: { required: true } },
                         Name: { type: "string", editable: true, validation: { required: true } },
@@ -377,8 +378,15 @@
                 refresh: true,
                 pageSizes: [5, 10, 25, 50, 100]
             },
-            columns: [
-                {
+            columns: [{
+                field: "Selected",
+                title: " ",
+                width: 50,
+                headerTemplate: "<label for=\"checkAll\"><div style=\"text-align: center\"><input type=\"checkbox\" id=\"checkAll\" /></div></label>",
+                template: "<label for=\"#= MitgliedId #\"><div style=\"text-align: center\"><input type=\"checkbox\" class=\"checkbox\" id=\"#= MitgliedId #\" name=\"isSel\" /></div></label>",
+                filterable: false,
+                sortable: false
+                },{
                     command: [
                         { name: "edit", text: "" },
                         { name: "destroy", text: "" }
@@ -399,8 +407,8 @@
                         }
                     }
                 }, {
-                    field: "Name",
-                    title: "Name",
+                    field: "Vorname",
+                    title: "Vorname",
                     filterable: {
                         extra: false,
                         operators: {
@@ -411,8 +419,8 @@
                         }
                     }
                 }, {
-                    field: "Vorname",
-                    title: "Vorname",
+                    field: "Name",
+                    title: "Name",
                     filterable: {
                         extra: false,
                         operators: {
@@ -471,36 +479,37 @@
                             }
                         }
                     }
-                }, {
-                    field: "MitgliedschaftTypeName",
-                    title: "Mitgliedschaft",
-                    filterable: {
-                        ui: mitgliedTypeFilter,
-                        extra: false,
-                        operators: {
-                            string: {
-                                eq: "Ist gleich"
-                            }
-                        }
-                    }
-                }, {
-                    field: "RechnungsDatumString",
-                    title: "Rechnung",
-                    format: "{0:dd.MM.yyyy}",
-                    attributes: { style: "text-align:center" },
-                    width: 120,
-                    filterable: {
-                        //ui: mitgliedTypeFilter,
-                        extra: false,
-                        operators: {
-                            date: {
-                                eq: "Ist gleich",
-                                gte: "Ist grösser oder gleich",
-                                lte: "Ist kleiner oder gliech"
-                            }
-                        }
-                    }
                 }
+            //{
+                //    field: "MitgliedschaftTypeName",
+                //    title: "Mitgliedschaft",
+                //    filterable: {
+                //        ui: mitgliedTypeFilter,
+                //        extra: false,
+                //        operators: {
+                //            string: {
+                //                eq: "Ist gleich"
+                //            }
+                //        }
+                //    }
+                //}, {
+                //    field: "RechnungsDatumString",
+                //    title: "Rechnung",
+                //    format: "{0:dd.MM.yyyy}",
+                //    attributes: { style: "text-align:center" },
+                //    width: 120,
+                //    filterable: {
+                //        //ui: mitgliedTypeFilter,
+                //        extra: false,
+                //        operators: {
+                //            date: {
+                //                eq: "Ist gleich",
+                //                gte: "Ist grösser oder gleich",
+                //                lte: "Ist kleiner oder gliech"
+                //            }
+                //        }
+                //    }
+                //}
             ],
             edit: function(e) {
                 e.container.kendoWindow("title", "Mitglied");
@@ -542,13 +551,32 @@
                 g.find(".k-grid-delete").attr("title", "Löschen");
                 g.find(".k-plus").attr("title", "Erweitern");
             }
-        });
+        }).data("kendoGrid");;
 
         $(window).resize(function() {
             resizeSplitter();
         });
 
         resizeSplitter();
+
+        $("checkbox [name='isSel']").change(function () {
+            var item = $(this);
+            var mId = item.val();
+            var chk = item.checked;
+
+            console.log("MitgliedId:=" + mId + " - Checket=" + chk);
+
+        });
+
+        $("#checkAll").click(function () {
+            var checked = this.checked, dataItem, rows = gridU.table.find("tr");
+            for (var i = 0; i < rows.length; i++) {
+                dataItem = gridU.dataItem(rows[i]);
+                dataItem.IsExitMark = checked;
+                $(rows[i]).find("[name='isSel']").prop('checked', checked);
+            }
+        });
+
     });
 
     function detailInit(e) {
