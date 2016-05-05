@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net45": {
+      "wrappedProject": "../../Log/Log.csproj",
+      "bin": {
+        "assembly": "../../Log/obj/{configuration}/Log.dll",
+        "pdb": "../../Log/obj/{configuration}/Log.pdb"
+      },
+      "dependencies": {
+        "log4net": "2.0.3"
+      }
+    }
+  }
+}

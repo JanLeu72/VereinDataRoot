@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "net45": {
+      "wrappedProject": "../../Models/Models.csproj",
+      "bin": {
+        "assembly": "../../Models/obj/{configuration}/Models.dll",
+        "pdb": "../../Models/obj/{configuration}/Models.pdb"
+      },
+      "dependencies": {
+        "log4net": "2.0.3"
+      }
+    }
+  }
+}
