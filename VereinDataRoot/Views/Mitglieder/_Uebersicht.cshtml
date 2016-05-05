@@ -325,8 +325,8 @@
                 model: {
                     id: "MitgliedId",
                     fields: {
-                        Selected : {},
-                        MitgliedId: { type: "boolen", editable: true, nullable: true },
+                        MitgliedId: { type: "number", editable: false, nullable: false },
+                        Selected: { type: "boolen", editable: true, nullable: true },
                         Anrede: { type: "string", editable: true, nullable: true },
                         Vorname: { type: "string", editable: true, validation: { required: true } },
                         Name: { type: "string", editable: true, validation: { required: true } },
@@ -479,38 +479,7 @@
                             }
                         }
                     }
-                }
-            //{
-                //    field: "MitgliedschaftTypeName",
-                //    title: "Mitgliedschaft",
-                //    filterable: {
-                //        ui: mitgliedTypeFilter,
-                //        extra: false,
-                //        operators: {
-                //            string: {
-                //                eq: "Ist gleich"
-                //            }
-                //        }
-                //    }
-                //}, {
-                //    field: "RechnungsDatumString",
-                //    title: "Rechnung",
-                //    format: "{0:dd.MM.yyyy}",
-                //    attributes: { style: "text-align:center" },
-                //    width: 120,
-                //    filterable: {
-                //        //ui: mitgliedTypeFilter,
-                //        extra: false,
-                //        operators: {
-                //            date: {
-                //                eq: "Ist gleich",
-                //                gte: "Ist grösser oder gleich",
-                //                lte: "Ist kleiner oder gliech"
-                //            }
-                //        }
-                //    }
-                //}
-            ],
+                } ],
             edit: function(e) {
                 e.container.kendoWindow("title", "Mitglied");
 
@@ -559,20 +528,26 @@
 
         resizeSplitter();
 
-        $("checkbox [name='isSel']").change(function () {
-            var item = $(this);
-            var mId = item.val();
+        gridU.table.on("click", ".checkbox", function() {
+            var item = this;
+            var mId = item.id;
             var chk = item.checked;
+            if (chk) {
+                mitglieder.push(mid);
+            } else {
+                for (var i = 0; i < mitglieder.length; i++) {
+                    mitglieder = mitglieder.slice(i, i).concat(mitglieder.slice(i + 1));
+                }
+            }
 
             console.log("MitgliedId:=" + mId + " - Checket=" + chk);
-
         });
 
         $("#checkAll").click(function () {
             var checked = this.checked, dataItem, rows = gridU.table.find("tr");
             for (var i = 0; i < rows.length; i++) {
                 dataItem = gridU.dataItem(rows[i]);
-                dataItem.IsExitMark = checked;
+                dataItem.Selected = checked;
                 $(rows[i]).find("[name='isSel']").prop('checked', checked);
             }
         });
