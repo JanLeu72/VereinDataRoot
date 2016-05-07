@@ -518,6 +518,7 @@
                 var g = $("#gridU");
                 g.find(".k-grid-edit").attr("title", "Bearbeiten");
                 g.find(".k-grid-delete").attr("title", "Löschen");
+                g.find("k-grid-filter").attr("title", "Filter");
                 g.find(".k-plus").attr("title", "Erweitern");
             }
         }).data("kendoGrid");;
@@ -533,7 +534,7 @@
             var mId = item.id;
             var chk = item.checked;
             if (chk) {
-                mitglieder.push(mid);
+                mitglieder.push(mId);
             } else {
                 for (var i = 0; i < mitglieder.length; i++) {
                     mitglieder = mitglieder.slice(i, i).concat(mitglieder.slice(i + 1));
@@ -541,18 +542,35 @@
             }
 
             console.log("MitgliedId:=" + mId + " - Checket=" + chk);
+            shosMitglieder();
         });
 
         $("#checkAll").click(function () {
-            var checked = this.checked, dataItem, rows = gridU.table.find("tr");
+            var checked = this.checked, dataItem, item, rows = gridU.table.find("tr");
             for (var i = 0; i < rows.length; i++) {
-                dataItem = gridU.dataItem(rows[i]);
-                dataItem.Selected = checked;
-                $(rows[i]).find("[name='isSel']").prop('checked', checked);
+                //dataItem = gridU.dataItem(rows[i]);
+                //dataItem.Selected = checked;
+                item = $(rows[i]).find(".checkbox");
+                item.prop('checked', checked);
+                //debugger;
+                if (checked) {
+                    mitglieder.push(item[0].id);
+                } else {
+                    for (var ix = 0; i < mitglieder.length; ix++) {
+                        mitglieder = mitglieder.slice(ix, ix).concat(mitglieder.slice(ix + 1));
+                    }
+                }
             }
+            shosMitglieder();
         });
-
     });
+
+    function shosMitglieder() {
+        console.log("ShowMitglieder...");
+        for (var i = 0; i < mitglieder.length; i++) {
+            console.log("MitgliedId: " + mitglieder[i]);
+        }
+    }
 
     function detailInit(e) {
         var detailRow = e.detailRow;
