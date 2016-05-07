@@ -211,27 +211,28 @@
             return Json(false);
         }
 
-        public JsonResult GetMitglieder(int skip, int take, GridFilters filter = null, List<TableSort> sort = null)
+        //public JsonResult GetMitglieder(int skip, int take, GridFilters filter = null, List<TableSort> sort = null)
+        public JsonResult GetMitglieder()
         {
             MandantSession session = (MandantSession) Session["MandantSession"];
 
             MitgliedRequest request = new MitgliedRequest();
             request.MandantId = session.MandantId;
-            request.Skip = skip;
-            request.Take = take;
+            request.Skip = 0;
+            request.Take = int.MaxValue;
             request.Filters = new List<TableFilter>();
             request.Sorting = new List<TableSort>();
 
-            if (sort != null && sort.Count > 0)
-            {
-                request.Sorting = sort;
-            }
+            //if (sort != null && sort.Count > 0)
+            //{
+            //    request.Sorting = sort;
+            //}
 
-            if (filter != null
-                && filter.Filters != null)
-            {
-                request.Filters = filter.Filters;
-            }
+            //if (filter != null
+            //    && filter.Filters != null)
+            //{
+            //    request.Filters = filter.Filters;
+            //}
 
             Mitglieder mitglieder = new Mitglieder();
             MitgliedGrid l = mitglieder.GetMitglieder(request);

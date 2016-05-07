@@ -307,9 +307,9 @@
                     contentType: "application/json; charset=utf-8"
                 },
                 parameterMap: function(data, operation) {
-                    if (operation === "read") {
-                        return JSON.stringify(data);
-                    }
+                    //if (operation === "read") {
+                    //    return JSON.stringify(data);
+                    //}
                     if (operation !== "read") {
                         return kendo.stringify({ model: data });
                     }
@@ -348,9 +348,9 @@
             },
             pageSize: 25,
             autoSync: false,
-            serverPaging: true,
-            serverFiltering: true,
-            serverSorting: true,
+            //serverPaging: true,
+            //serverFiltering: true,
+            //serverSorting: true,
             error: function(e) {
                 alert(e.status + " " + e.statusText);
             }
@@ -378,22 +378,15 @@
                 refresh: true,
                 pageSizes: [5, 10, 25, 50, 100]
             },
-            columns: [{
+            columns: [ {
                 field: "Selected",
                 title: " ",
                 width: 50,
-                headerTemplate: "<label for=\"checkAll\"><div style=\"text-align: center\"><input type=\"checkbox\" id=\"checkAll\" /></div></label>",
-                template: "<label for=\"#= MitgliedId #\"><div style=\"text-align: center\"><input type=\"checkbox\" class=\"checkbox\" id=\"#= MitgliedId #\" name=\"isSel\" /></div></label>",
+                headerTemplate: "<div style=\"text-align: center\"><input type=\"checkbox\" id=\"checkAll\" /></div>",
+                template: "<div style=\"text-align: center\"><input type='checkbox' class='checkbox' /></div>",
                 filterable: false,
                 sortable: false
-                },{
-                    command: [
-                        { name: "edit", text: "" },
-                        { name: "destroy", text: "" }
-                    ],
-                    titel: "&nbsp;",
-                    width: 80
-                }, {
+            }, {
                     field: "Anrede",
                     title: "Anrede",
                     width: 100,
@@ -479,7 +472,14 @@
                             }
                         }
                     }
-                } ],
+                }, {
+                    command: [
+                        { name: "edit", text: "" },
+                        { name: "destroy", text: "" }
+                    ],
+                    titel: "&nbsp;",
+                    width: 80
+                }],
             edit: function(e) {
                 e.container.kendoWindow("title", "Mitglied");
 
@@ -514,14 +514,8 @@
                         e.model.LandId = dataItem.Id;
                     });
             },
-            dataBound: function(e) {
-                var g = $("#gridU");
-                g.find(".k-grid-edit").attr("title", "Bearbeiten");
-                g.find(".k-grid-delete").attr("title", "Löschen");
-                g.find("k-grid-filter").attr("title", "Filter");
-                g.find(".k-plus").attr("title", "Erweitern");
-            }
-        }).data("kendoGrid");;
+            dataBound: onDataBound
+        }).data("kendoGrid");
 
         $(window).resize(function() {
             resizeSplitter();
@@ -529,48 +523,70 @@
 
         resizeSplitter();
 
-        gridU.table.on("click", ".checkbox", function() {
-            var item = this;
-            var mId = item.id;
-            var chk = item.checked;
-            if (chk) {
-                mitglieder.push(mId);
-            } else {
-                for (var i = 0; i < mitglieder.length; i++) {
-                    mitglieder = mitglieder.slice(i, i).concat(mitglieder.slice(i + 1));
-                }
-            }
+        gridU.table.on("click", ".checkbox", selectRow);
 
-            console.log("MitgliedId:=" + mId + " - Checket=" + chk);
-            shosMitglieder();
-        });
-
-        $("#checkAll").click(function () {
-            var checked = this.checked, dataItem, item, rows = gridU.table.find("tr");
-            for (var i = 0; i < rows.length; i++) {
-                //dataItem = gridU.dataItem(rows[i]);
-                //dataItem.Selected = checked;
-                item = $(rows[i]).find(".checkbox");
-                item.prop('checked', checked);
-                //debugger;
-                if (checked) {
-                    mitglieder.push(item[0].id);
-                } else {
-                    for (var ix = 0; i < mitglieder.length; ix++) {
-                        mitglieder = mitglieder.slice(ix, ix).concat(mitglieder.slice(ix + 1));
-                    }
-                }
-            }
-            shosMitglieder();
-        });
     });
 
-    function shosMitglieder() {
-        console.log("ShowMitglieder...");
-        for (var i = 0; i < mitglieder.length; i++) {
-            console.log("MitgliedId: " + mitglieder[i]);
+    //http://dojo.telerik.com/ALiwi
+
+    $("#checkAll").click(function () {
+        var checked = this.checked;
+        var data = gridU.dataSource.data();
+        for (var i = 0; i < data.length; i++) {
+            data[i].Selected = checked;
+            if (checked) {
+                gridU.tbody.find("tr[data-uid='" + data[i].uid + "']")
+                    .addClass("k-state-selected")
+                    .find(".checkbox")
+                    .prop("checked", true);
+            } else {
+                gridU.tbody.find("tr[data-uid='" + data[i].uid + "']")
+                    .removeClass("k-state-selected")
+                    .find(".checkbox")
+                    .prop("checked", false);
+            }
+        }
+    });
+
+    function selectRow() {
+        var checked = this.checked,
+        row = $(this).closest("tr"),
+        dataItem = gridU.dataItem(row);
+        dataItem.Selected = checked;
+        if (checked) {
+            row.addClass("k-state-selected");
+        } else {
+            row.removeClass("k-state-selected");
         }
     }
+
+    function onDataBound(e) {
+        var view = this.dataSource.view();
+        for (var i = 0; i < view.length; i++) {
+            if (view[i].Selected) {
+                this.tbody.find("tr[data-uid='" + view[i].uid + "']")
+                .addClass("k-state-selected")
+                .find(".checkbox")
+                .prop("checked", true);
+            }
+        }
+        var g = $("#gridU");
+        g.find(".k-grid-edit").attr("title", "Bearbeiten");
+        g.find(".k-grid-delete").attr("title", "Löschen");
+        g.find("k-grid-filter").attr("title", "Filter");
+        g.find(".k-plus").attr("title", "Detailansicht");
+
+        //showMitglieder();
+    }
+
+    //function showMitglieder() {
+    //    console.log("ShowMitglieder...");
+    //    var data = gridU.dataSource.data();
+    //    for (var i = 0; i < data.length; i++) {
+    //        console.log("MitgliedId: " + data[i].MitgliedId);
+    //        console.log("Selected: " + data[i].Selected);
+    //    }
+    //}
 
     function detailInit(e) {
         var detailRow = e.detailRow;
@@ -642,7 +658,7 @@
         element.kendoDropDownList({
             dataSource: dsAnrede,
             dataTextField: "Value",
-            dataValueField: "Id"
+            dataValueField: "Value"
         });
     }
 
@@ -650,7 +666,7 @@
         element.kendoDropDownList({
             dataSource: dsMitgliedschaft,
             dataTextField: "Value",
-            dataValueField: "Id"
+            dataValueField: "Value"
         });
     }
 
@@ -658,7 +674,7 @@
         element.kendoDropDownList({
             dataSource: dsMaGruppe,
             dataTextField: "Value",
-            dataValueField: "Id"
+            dataValueField: "Value"
         });
     }
 
